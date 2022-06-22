@@ -1,0 +1,61 @@
+#headerbody{  
+    padding-top: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+ 
+}
+.reginput{
+    width: 200px;
+    height: 30px;
+}
+.passinput{
+    width: 200px;
+    height: 30px;
+}
+
+
+#headerbody1 {
+    /* background-color: rgba(74, 135, 204, 0.514); */
+    background-color: rgb(158, 169, 217);
+    height: auto;
+
+}
+
+.institution {
+    color: red;
+    justify-content: center;
+    text-align: left;
+    margin-left: 20px;
+}
+.motto{
+    color: rgb(167, 115, 48);
+    font-style: italic;
+    justify-content: center;
+    text-align: left;
+    margin-left: 20px;
+    font-size: 20px;
+}
+.elearningLabel{
+    text-align: left;
+    margin-left: 50px;
+    font-size: 20px;
+}
+
+#reset{
+   color: red;
+}
+
+#register{
+    color: green;
+}
+
+#topparagraph{
+    text-align: center;
+    font-style: bold;
+    
+}
+
+#Thebody {
+    text-align: center;
+}
