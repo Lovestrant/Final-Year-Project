@@ -90,13 +90,23 @@
                     if($queryResults2 >0) {
                               while($row = mysqli_fetch_assoc($data2)) {
                            
-                                echo "  
-                                <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
-                                <img src='../files/profiles/profiles".$row['imgurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
-                                       
+                                if(empty($row['imgurl'])) {
+                                    $TheDefaultLink = "DefaultIMG.PNG";
+                                    echo "  
+                                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
+                                    <img src='../files/profiles/".$TheDefaultLink."' style = 'width: 20%;border-radius:100%; height:auto;'>
+                                        
+                                  ";
+                                  
+                                }else{
+                                    echo "  
+                                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
+                                    <img src='../files/profiles/profiles".$row['imgurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
+                                        
+                                  ";
+                                  
+                                }
 
-                              ";
-                              
                             }
                         }
          }else{

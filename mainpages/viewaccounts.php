@@ -107,8 +107,6 @@
   $queryResults2= mysqli_num_rows($data2);
 
 
-
-
         if($queryResults2 >0) {
            while($row = mysqli_fetch_assoc($data2)) {
 
@@ -121,13 +119,13 @@
                     margin-top: 4%;margin-bottom: 4%;'>
                     <h2 style='text-decoration: underline;'>".$row['accountName']."</h2>
                     <div>
+                    
                     <img src='../files/bizprofiles/bizprofiles".$row['profileurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
                            
                     </div>
 
                     <div style='margin-top: -1%; '>
                    
-
                         <p>".$row['description']."</p>
                         <a href='intobizacc.php?acc_id=".$row['id']."'>
                         <button style='margin-left: 10%;margin-top:19px; color:red;'>View</button>

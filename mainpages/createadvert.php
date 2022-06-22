@@ -55,15 +55,16 @@
             
             $postData = [
                 "phonenumber" => $phonenumber,
-                "accId" => $accId,
+                "id" => $accId,
                 "adtitle" => $adtitle,
                 "picurl" => $picurl,
                 "price" => $price,
-                "Bizdescription" => $Bizdescription,
+                "description" => $Bizdescription,
                 "location" => $location,
                 "longitude" => $longitude,
                 "latitude" => $latitude,
                 "picurl2" => $picurl2,
+                "accountName" => $accountName,
             ];
             
             $ref_table = "Adverts";

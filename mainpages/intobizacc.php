@@ -192,126 +192,115 @@
 
  </div>
 
-
-
-
          <div class="container">
              <div class="row">
                  <div class="col-sm-12" id="ads">
                      <h2>This Account's Adverts:</h2>
      <?php 
+    //Requiring DB configs
 
-
-
+    include_once('../FirebaseConfig/dbcon.php');
 
         include_once('../db.php');
           
         $phonenumber = $_SESSION['phonenumber'];
         $accId = $_GET['acc_id'];
       
-    
-            $sql="SELECT * FROM adverts where phonenumber='$phonenumber' and accId = '$accId'";
+        $ref_table ="Adverts";
+        $fetchData = $database->getReference($ref_table)->getValue();
 
- 
-                   $data2= mysqli_query($con,$sql);
-                   $queryResults2= mysqli_num_rows($data2);
-                   
-         
-                   
-                    if($queryResults2 >0) {
-                              while($row = mysqli_fetch_assoc($data2)) {
-                                if(!$row['picurl'] && !$row['picurl2']){
-                                    echo "  
-                                <div>
-                                    <h3 style='color: green;'>".$row['adtitle']."</h3>
-                                    
-                                </div>
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['phonenumber'] === $phonenumber && $row['id'] === $accId) {
+                    if(!$row['picurl'] && !$row['picurl2']){
+                        echo "  
+                        <div>
+                            <h3 style='color: green;'>".$row['adtitle']."</h3>
+                            
+                        </div>
 
-                                <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
-                                
-                                <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
-                                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-                                <div>
-                                <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                                <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
-                                </div>
-                                <hr>
-                                </div>
+                        <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
+                        
+                        <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
+                        <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                        <div>
+                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        </div>
+                        <hr>
+                        </div>
 
-                               
-                              ";
+                       
+                      ";
 
-                                } elseif(!$row['picurl'] && $row['picurl2']){
-                                    echo "  
-                                <div>
-                                    <h3 style='color: green;'>".$row['adtitle']."</h3>
-                                    
-                                </div>
+                        } elseif(!$row['picurl'] && $row['picurl2']){
+                            echo "  
+                        <div>
+                            <h3 style='color: green;'>".$row['adtitle']."</h3>
+                            
+                        </div>
 
-                                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-                                <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
-                                <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
-                                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-                                <div>
-                                <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                                <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
-                                </div>
-                                <hr>
-                                </div>
+                        <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                        <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
+                        <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
+                        <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                        <div>
+                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        </div>
+                        <hr>
+                        </div>
 
-                               
-                              ";
-                                } elseif($row['picurl'] && !$row['picurl2']){
-                                    echo "  
-                                <div>
-                                    <h3 style='color: green;'>".$row['adtitle']."</h3>
-                                    
-                                </div>
+                       
+                      ";
+                        } elseif($row['picurl'] && !$row['picurl2']){
+                            echo "  
+                        <div>
+                            <h3 style='color: green;'>".$row['adtitle']."</h3>
+                            
+                        </div>
 
-                                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-                                <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
-                                <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
-                                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-                                <div>
-                                <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                                <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
-                                </div>
-                                <hr>
-                                </div>
+                        <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                        <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
+                        <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
+                        <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                        <div>
+                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        </div>
+                        <hr>
+                        </div>
 
-                               
-                              ";
-                                } elseif($row['picurl'] && $row['picurl2']){
-                                    echo "  
-                                <div>
-                                    <h3 style='color: green;'>".$row['adtitle']."</h3>
-                                    
-                                </div>
+                       
+                      ";
+                        } elseif($row['picurl'] && $row['picurl2']){
+                            echo "  
+                        <div>
+                            <h3 style='color: green;'>".$row['adtitle']."</h3>
+                            
+                        </div>
 
-                                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-                                <img class='zoom2' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 45%; height:auto;'>
-                                <img class='zoom2' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 45%; height:auto;'>
-                                <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
-                                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-                                <div>
-                                <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                                <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
-                                </div>
-                                <hr>
-                                </div>
+                        <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                        <img class='zoom2' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 45%; height:auto;'>
+                        <img class='zoom2' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 45%; height:auto;'>
+                        <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
+                        <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                        <div>
+                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        </div>
+                        <hr>
+                        </div>
 
-                               
-                              ";
+                       
+                      ";
 
-                                }
-                           
-                                
-                              
-                            }
                         }
-       
-
+                }
                               
+            }
+        }
+                             
     ?>
                     
                  </div>
