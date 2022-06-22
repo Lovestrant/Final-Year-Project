@@ -55,7 +55,9 @@
     font-style: bold;
     
 }
-
+#ToCentreRow,#viewaccounts {
+    text-align: center;  
+}
 #Thebody {
     text-align: center;
 }
