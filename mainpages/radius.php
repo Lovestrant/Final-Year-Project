@@ -65,15 +65,9 @@
 <div class="col-sm-12" id="homebody">
    <?php 
 
-
 if($_SESSION['phonenumber']){
 
-     include_once('../db.php');
-        //Requiring DB configs
-
     include_once('../FirebaseConfig/dbcon.php');
-
-    include_once('../db.php');
       
     $phonenumber = $_SESSION['phonenumber'];
   

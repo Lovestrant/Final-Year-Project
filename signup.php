@@ -6,18 +6,19 @@ $fullname = $password = $passwordconfirm = $securitykeyConfirm = $securitykey =$
 
 $errors = array("Err" => "", "passwordErr" => "", "success" => "");
 
-include_once('db.php');
+    //Requiring DB configs
+include_once('./FirebaseConfig/dbcon.php');
 
 
 if(isset($_POST['submit'])){
 
-    $fullname = mysqli_real_escape_string($con, $_POST['fullname']);
-    $securitykeyConfirm = mysqli_real_escape_string($con, $_POST['securitykeyConfirm']);
-    $securitykey = mysqli_real_escape_string($con, $_POST['securitykey']);
-    $phonenumber = mysqli_real_escape_string($con, $_POST['phonenumber']);
+    $fullname = $_POST['fullname'];
+    $securitykeyConfirm = $_POST['securitykeyConfirm'];
+    $securitykey = $_POST['securitykey'];
+    $phonenumber = $_POST['phonenumber'];
    
-    $password = mysqli_real_escape_string($con, $_POST['password']);
-    $passwordconfirm = mysqli_real_escape_string($con, $_POST['passwordconfirm']);
+    $password = $_POST['password'];
+    $passwordconfirm = $_POST['passwordconfirm'];
    
      
      if($password != $passwordconfirm || $securitykey != $securitykeyConfirm){
@@ -28,25 +29,36 @@ if(isset($_POST['submit'])){
         $errors['Err'] = "Fill all the fields.";
      }else{
 
-        $sql1="SELECT * FROM authentication where phonenumber = '$phonenumber' Limit 1";
-    
-		$result= mysqli_query($con,$sql1);
-		$queryResults= mysqli_num_rows($result);
-		
-		
-        if($queryResults) {
 
-            $errors['passwordErr'] = "A user with same phonenumber already exist.";
-           // echo"<script>alert('A user with same phone number already exist. Try again with a different number.')</script>"; 
+  
+        $ref_table ="authentication";
+        $fetchData = $database->getReference($ref_table)->getValue();
+    
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['phonenumber'] === $phonenumber) {
+                    $errors['passwordErr'] = "A user with same phonenumber already exist.";
+                }
+            }
+     
         }else{
            $password1 = md5($password);//encryption of password
            $securitykey2 = md5($securitykey);
 
-            $sql = "INSERT INTO authentication (fullname, phonenumber,securitykey, password) VALUES ('$fullname', '$phonenumber','$securitykey2','$password1')";
-		    $res = mysqli_query($con,$sql);
-		
+            //Insert Data Into firebase Realtime Database
+
+            $postData = [
+                "fullname" => $fullname,
+                "phonenumber" => $phonenumber,
+                "securitykey" => $securitykey2,
+                "password" => $password1,
+
+            ];
+            
+            
+            $postRef = $database->getReference($ref_table)->push($postData);
 	
-		if($res ==1){
+		if($postRef){
 
         //set session variables
         $_SESSION['fullname'] = "$fullname";

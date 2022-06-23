@@ -1,40 +1,76 @@
 <?php 
     session_start();
 
-    include_once('../db.php');
+    include_once('../FirebaseConfig/dbcon.php');
     //initializing errors array
     $errors = array("error" => "", "success" => "");
 
     if (isset($_POST['updateProfile'])) {
 
-    //getting session variables
+            //getting session variables
     $phonenumber = $_SESSION['phonenumber'];
 
+        $ref_table ="profilePictures";
+        $fetchData = $database->getReference($ref_table)->getValue();
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['phonenumber'] == $phonenumber) { 
 
-        $sql="SELECT * FROM authentication where phonenumber='$phonenumber'";
+                $imgurl = $_FILES['file']['name'];
+                $tmp = $_FILES['file']['tmp_name'];
+                move_uploaded_file($tmp,"../files/profiles/profiles".$imgurl);
 
-        $data= mysqli_query($con,$sql);
-        $queryResults= mysqli_num_rows($data);
-        
-        if($queryResults >0) {
-          
+                $uid = $key;
+                $UpdateData = [
+                    "imgurl" => $imgurl,
+                    'phonenumber' => $row['phonenumber'],
+               
+              
+                ];
+
+                $postData = [
+                
+                    "phonenumber" => $phonenumber,
+                    "imgurl" => $imgurl,
+                
+                ];
+                
+
+                // Create a key for a new post
+                $ref_table = 'profilePictures/'.$uid;
+                 $queryResult = $database->getReference($ref_table)->update($UpdateData);
+              
+                if($queryResult) {
+                    $errors['success'] ="Profile Updated Successfully.";
+                }else {
+                    $errors['error'] ="Failed, Try again later";
+                }
+            } 
+          }
+        } else {
+
             $imgurl = $_FILES['file']['name'];
             $tmp = $_FILES['file']['tmp_name'];
             move_uploaded_file($tmp,"../files/profiles/profiles".$imgurl);
-
-            $sql = "UPDATE authentication set imgurl = '$imgurl' where phonenumber= '$phonenumber'";
-            $res = mysqli_query($con,$sql);
-            
-            if($res ==1){
         
-            $errors['success'] ="Profile Updated Successfully.";
-                                
-              }
-                   
-            }else{
-                $errors['error'] ="No such User.";
+            $postData = [
+             
+                "phonenumber" => $phonenumber,
+                "imgurl" => $imgurl,
+               
+            ];
+            
+        
+            $postRef = $database->getReference($ref_table)->push($postData);
+        
+            if($postRef) {
+                $errors['success'] ="Profile Updated Successfully.";
+            }else {
+                $errors['error'] ="Failed, Try again later";
             }
         }
+    
+    }
 
 ?>
 
@@ -66,7 +102,7 @@
 <div class = "container"> 
 
     <div class="row">
-<div class = "row" style="margin-left: 5%;margin-top: 2%;text-align:center;">
+<div class = "row" style="margin-left: 5%;margin-top: 4%;text-align:center;">
   
     <?php 
     
@@ -74,42 +110,45 @@
 
 
 
-        include_once('../db.php');
+  include_once('../FirebaseConfig/dbcon.php');
           
         $phonenumber = $_SESSION['phonenumber'];
       
+        $ref_table ="profilePictures";
+        $fetchData = $database->getReference($ref_table)->getValue();
     
-            $sql="SELECT * FROM authentication where phonenumber='$phonenumber'";
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['phonenumber'] === $phonenumber) {
 
- 
-                   $data2= mysqli_query($con,$sql);
-                   $queryResults2= mysqli_num_rows($data2);
-                   
-         
-                   
-                    if($queryResults2 >0) {
-                              while($row = mysqli_fetch_assoc($data2)) {
-                           
-                                if(empty($row['imgurl'])) {
-                                    $TheDefaultLink = "DefaultIMG.PNG";
-                                    echo "  
-                                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
-                                    <img src='../files/profiles/".$TheDefaultLink."' style = 'width: 20%;border-radius:100%; height:auto;'>
-                                        
-                                  ";
-                                  
-                                }else{
-                                    echo "  
-                                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
-                                    <img src='../files/profiles/profiles".$row['imgurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
-                                        
-                                  ";
-                                  
-                                }
+                    echo "  
+                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
+                    <img src='../files/profiles/profiles".$row['imgurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
+                        
+                    ";
+                      
+                    
+                }else {
+                    $TheDefaultLink = "DefaultIMG.PNG";
+                    echo "  
+                    <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
+                    <img src='../files/profiles/".$TheDefaultLink."' style = 'width: 20%;border-radius:100%; height:auto;'>
 
-                            }
-                        }
-         }else{
+                  ";
+                  
+                }
+            }
+        }else {
+            $TheDefaultLink = "DefaultIMG.PNG";
+            echo "  
+            <div style='margin-top: 5%; text-align:centre; margin-bottom: 5%;'>
+            <img src='../files/profiles/".$TheDefaultLink."' style = 'width: 20%;border-radius:100%; height:auto;'>
+
+          ";
+          
+        }
+                   
+         } else{
             echo "<script>alert('Your Session has expired.You need to login again')</script>";
             echo "<script>location.replace('../index.php')</script>";
          }

@@ -5,15 +5,16 @@ $phonenumber = $securitykey = $password = $passwordconfirm = '';
 
 $errors = array("passwordErr" => "", "success" =>"");
 
-include_once('db.php');
+    //Requiring DB configs
+include_once('./FirebaseConfig/dbcon.php');
 
 if(isset($_POST['submit'])){
 
     
-    $securitykey= mysqli_real_escape_string($con, $_POST['securitykey']);
-    $phonenumber= mysqli_real_escape_string($con, $_POST['phonenumber']);
-    $password= mysqli_real_escape_string($con, $_POST['password']);
-    $passwordconfirm= mysqli_real_escape_string($con, $_POST['passwordconfirm']);
+    $securitykey= $_POST['securitykey'];
+    $phonenumber= $_POST['phonenumber'];
+    $password= $_POST['password'];
+    $passwordconfirm= $_POST['passwordconfirm'];
 
     if(empty($securitykey) || empty($phonenumber) || empty($password) || empty($passwordconfirm)) {
         $errors['passwordErr'] = "Fill all fields.";
@@ -25,36 +26,57 @@ if(isset($_POST['submit'])){
         }elseif(($password == $passwordconfirm)){
             $securitykey1 = md5($securitykey);//Encrypting Security Key
 
-            $sql1 = "SELECT * from authentication where phonenumber = '$phonenumber' and securitykey = '$securitykey1' Limit 1";
-            $result= mysqli_query($con,$sql1);
-            $queryResults= mysqli_num_rows($result);
-            
-            
-            if($queryResults) {
+            $ref_table ="authentication";
+            $fetchData = $database->getReference($ref_table)->getValue();
+        
+            if($fetchData >0) {
+                foreach($fetchData as $key =>$row){
+                    if($row['phonenumber'] === $phonenumber && $row['securitykey'] === $securitykey1) {
+                        
+                $password1 = md5($password); //encryption of password
 
-                while($row = mysqli_fetch_assoc($result)) {
-               $password1 = md5($password);//encryption of password
-                $sql = "UPDATE authentication set password = '$password1' where phonenumber= '$phonenumber'";
-               $res = mysqli_query($con,$sql);       
-                if($res ==1){
+                //Update Table Password
+                $uid = $key;
+                $UpdateData = [
+                    'fullname' => $row['fullname'],
+                    'password' => $password1,
+                    'phonenumber' => $row['phonenumber'],
+                    'securitykey' => $row['securitykey'], 
+              
+                ];
+
+                // Create a key for a new post
+                $ref_table = 'authentication/'.$uid;
+                 $queryResult = $database->getReference($ref_table)->update($UpdateData);
+              
+                if($queryResult >0) {
+
                 //set session variables
                 $_SESSION['fullname'] = $row['fullname'];
                 $_SESSION['phonenumber'] = $row['phonenumber'];
                 $errors['success'] ="Update successful. You are now logged in.";
-                    
-                    echo "<script>location.replace('index.php')</script>";    
-         }else{               
-          $errors['phonenumberErr'] = "No user with those details in the system. Please try again. Ensure you fill your details correctly.";
-                                   
-            }
+            
+                    echo "<script>location.replace('index.php')</script>"; 
+                }else{
+                    $errors['phonenumberErr'] = "Failed to update, try again later";
+           
+                }
+
+
+            }else{
+
+            $errors['phonenumberErr'] = "No user with those details in the system. Please try again. Ensure you fill your details correctly.";
+           
         }
+        }
+
+       }
+     }
     }    
-      }
-    }
-   
-
-
+      
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,12 +135,7 @@ if(isset($_POST['submit'])){
         </div>
     </div>
 
-
-
 </div>
-    
-
-
-    
+ 
 </body>
 </html>

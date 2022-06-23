@@ -4,56 +4,56 @@ session_start();
 $phonenumber =$password = '';
 $errors = array("phonenumberErr" => "", "success" => "");
 
-include_once('db.php');
+
+    //Requiring DB configs
+    include_once('./FirebaseConfig/dbcon.php');
 
 if(isset($_POST['submit'])){
    
-    $phonenumber = mysqli_real_escape_string($con, $_POST['phonenumber']);
-    $password =  mysqli_real_escape_string($con, $_POST['password']);
+    $phonenumber = $_POST['phonenumber'];
+    $password = $_POST['password'];
 
     $password1 = md5($password); //encrypting password
-    $sql1="SELECT * FROM authentication where  phonenumber = '$phonenumber' and password= '$password1' LIMIT 1";
-  
-    $result= mysqli_query($con,$sql1);
-    $queryResults= mysqli_num_rows($result);
-    
-    if($queryResults) {
 
-        //get latitude and longitude from user location
-
-
-        //  $_SESSION['longitude'] = $longitude;
-        //$_SESSION['latitude'] = $latitude;
-
-        while($row = mysqli_fetch_assoc($result)) {
-
-        //set session variables
-        $_SESSION['fullname'] = $row['fullname'];
-        $_SESSION['phonenumber'] = $row['phonenumber'];
-
-        //taking user to main page
-      //  $errors['success'] = "Login successful.";
-      
-
-      echo "
-        <script>
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    var ab = pos.coords.latitude;
-                    var ac = pos.coords.longitude;
-                    window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
-                });
-            
-        </script>
-
-        "; 
-        
-        }
-    }else{
-        $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
-     
        
-    }
-        
+        $ref_table ="authentication";
+        $fetchData = $database->getReference($ref_table)->getValue();
+    
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['phonenumber'] == $phonenumber && $row['password'] == $password1) {
+                    
+
+            
+                    //set session variables
+                    $_SESSION['fullname'] = $row['fullname'];
+                    $_SESSION['phonenumber'] = $row['phonenumber'];
+            
+                    //taking user to main page
+                    $errors['success'] = "Login successful.";
+                  
+            
+                  echo "
+                    <script>
+                            navigator.geolocation.getCurrentPosition(function(pos) {
+                                var ab = pos.coords.latitude;
+                                var ac = pos.coords.longitude;
+                                window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                            });
+                        
+                    </script>
+            
+                    "; 
+                    
+                    
+                }else{
+                    $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
+                
+                }
+            }
+    
+
+        }      
 }
 
 
