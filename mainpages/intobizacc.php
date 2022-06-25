@@ -218,8 +218,8 @@
                         <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
                         <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
                         <div>
-                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        <a href='deletepage.php?postId=".$key."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$key."'><button>Edit</button></a>
                         </div>
                         <hr>
                         </div>
@@ -239,8 +239,8 @@
                         <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
                         <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
                         <div>
-                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        <a href='deletepage.php?postId=".$key."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$key."'><button>Edit</button></a>
                         </div>
                         <hr>
                         </div>
@@ -259,8 +259,8 @@
                         <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
                         <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
                         <div>
-                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        <a href='deletepage.php?postId=".$key."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$key."'><button>Edit</button></a>
                         </div>
                         <hr>
                         </div>
@@ -280,8 +280,8 @@
                         <p style='color: black;font-size:20px;margin-left:5%;margin-right:5%; '>".$row['description']."</p>  
                         <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
                         <div>
-                        <a href='deletepage.php?postId=".$row['id']."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
-                        <a href='editpage.php?postId=".$row['id']."'><button>Edit</button></a>
+                        <a href='deletepage.php?postId=".$key."'><button style='color: red;margin-right: 10%;'>Delete</button></a>
+                        <a href='editpage.php?postId=".$key."'><button>Edit</button></a>
                         </div>
                         <hr>
                         </div>
@@ -336,7 +336,7 @@
                     $uid = $key;
                     $UpdateData = [
                         'accountName' => $row['accountName'],
-                        'adtitle' => $adtitle,
+                        'adtitle' => $row['adtitle'],
                         'description' => $row['description'],
                         'id' => $row['id'],
                         'latitude' => $lat,

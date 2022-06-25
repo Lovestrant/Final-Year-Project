@@ -1,0 +1,41 @@
+#chatbox {
+    text-align: center;
+    background-color: whitesmoke;
+    margin-left: 10%;
+    margin-right: 10%;
+    overflow-y: scroll;
+    height: 390px;
+}
+
+#chatboxHeader{
+    background-color: teal;
+    
+}
+
+
+
+#createText {
+    background-color: rgb(96, 223, 159);
+    margin-left: 10%;
+    margin-right: 10%;
+}
+#chatinput{
+    width: 70%;
+    height: 30px;
+    margin-left: 5%;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    
+
+}
+#btnChat{
+    margin-top: 0%;
+}
+#h3top{
+    color: red;
+}
+#ptop{
+    color: white;
+    padding-bottom: 1%;
+    margin-top: -1%;
+}

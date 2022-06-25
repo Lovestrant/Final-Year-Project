@@ -98,7 +98,7 @@ if($_SESSION['phonenumber']){
 
             <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
            
-            <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+            <p style='color: black;font-size:20px; margin-top:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div style='text-align: centre;'>
             <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
