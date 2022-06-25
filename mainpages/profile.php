@@ -80,17 +80,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zero The market</title>
+    <title>Location-Based Ecommerce System</title>
 
     <!--Css link-->
-    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/home.css">
     <!--Bootstrap css Links -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!--Bootstrap JS Links -->
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-
-</head>
-
 
 
 </head>
@@ -160,7 +157,7 @@
  <div class="col-sm-12">
     <form action = "profile.php" method="post" enctype="multipart/form-data">
 
-        <input type="file" accept ="image/*" name="file" style="text-align: centre;"><br><br>
+        <label style="color: black;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose Profile picture</label> <br><br>
         <button name="updateProfile">Change Profile</button>
     </form>
 

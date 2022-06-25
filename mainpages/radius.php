@@ -62,7 +62,7 @@
   <p style='color:purple;'>Ads within your radius(3KM):</p>
     </div>
 
-<div class="col-sm-12" id="homebody">
+<div class="container" id="homebody">
    <?php 
 
 if($_SESSION['phonenumber']){
@@ -90,7 +90,7 @@ if($_SESSION['phonenumber']){
         if(!$row['picurl'] && !$row['picurl2']){
             echo "  
             <div>
-            <h2 style='color: red;'>".$row['accountName']."</h2>
+            <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
             <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                 
@@ -100,9 +100,9 @@ if($_SESSION['phonenumber']){
            
             <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$row['id']."'><button style='color: purple;'>Order</button></a>
+            <div style='text-align: centre;'>
+            <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
+            <a href='order.php?postId=".$key."'><button style='color: purple;'>Order</button></a>
             </div>
             <hr>
             </div>

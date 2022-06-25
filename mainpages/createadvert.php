@@ -4,7 +4,6 @@
     //initializing values
     $accountname = $description = $price ="";
 
-    include_once('../db.php');
     //Requiring DB configs
 
     include_once('../FirebaseConfig/dbcon.php');
@@ -17,9 +16,9 @@
 
       //getting session variables
       $phonenumber = $_SESSION['phonenumber'];
-      $description = mysqli_real_escape_string($con, $_POST['description']);
-      $adtitle = mysqli_real_escape_string($con, $_POST['adtitle']);
-      $price = mysqli_real_escape_string($con, $_POST['price']);
+      $description = $_POST['description'];
+      $adtitle = $_POST['adtitle'];
+      $price = $_POST['price'];
      // $picurl = $_FILES['file']['name'];
       $accId = $_POST['hiddenid'];
 
@@ -28,71 +27,72 @@
       $queryResults2= mysqli_num_rows($data2);
       
 
-      
-       if($queryResults2 >0) {
-                 while($row = mysqli_fetch_assoc($data2)) {
-              
-                  $accountName = $row['accountName'];
-                  $Bizdescription = $row['description'];
-                  $location = $row['location'];
-                  $latitude = $_SESSION['latitude'];
-                  $longitude = $_SESSION['longitude'];
-
-        if(!empty($description) && !empty($adtitle)) {
-
-            //Insert Data Into Folder Storage In Hosting Space
-
-            $picurl = $_FILES['file']['name'];
-            $tmp = $_FILES['file']['tmp_name'];
-            move_uploaded_file($tmp,"../files/adpics/adpics".$picurl);
-            //Second Ad pic upload
-            
-            $picurl2 = $_FILES['file2']['name'];
-            $tmp = $_FILES['file2']['tmp_name'];
-            move_uploaded_file($tmp,"../files/adpics/adpics".$picurl2);
-
-            //Insert Data Into firebase Realtime Database
-            
-            $postData = [
-                "phonenumber" => $phonenumber,
-                "id" => $accId,
-                "adtitle" => $adtitle,
-                "picurl" => $picurl,
-                "price" => $price,
-                "description" => $Bizdescription,
-                "location" => $location,
-                "longitude" => $longitude,
-                "latitude" => $latitude,
-                "picurl2" => $picurl2,
-                "accountName" => $accountName,
-            ];
-            
-            $ref_table = "Adverts";
-            $postRef = $database->getReference($ref_table)->push($postData);
-            
-        
-            if($postRef){
-        
-             //$errors['success'] ="Ad Creation Success.";
-             echo "<script>alert('Ad Creation Success.')</script>"; 
-             echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
-         
-             }
-          
-            }else{
-                // $errors['error'] ="Fill all required fields and choose a ad picture.";
-                 echo "<script>alert('Fill all required fields and choose ad pictures if necessary.')</script>"; 
-                 echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
-             }
-        
+      $ref_table ="bizaccounts";
+      $fetchData = $database->getReference($ref_table)->getValue();
+  
+      if($fetchData >0) {
+          foreach($fetchData as $key =>$row){
+            if($key === $accId) {
+                $accountName = $row['accountName'];
+                $Bizdescription = $row['description'];
+                $location = $row['location'];
+                $latitude = $_SESSION['latitude'];
+                $longitude = $_SESSION['longitude'];
+    
+                if(!empty($description) && !empty($adtitle)) {
+    
+                    //Insert Data Into Folder Storage In Hosting Space
+    
+                    $picurl = $_FILES['file']['name'];
+                    $tmp = $_FILES['file']['tmp_name'];
+                    move_uploaded_file($tmp,"../files/adpics/adpics".$picurl);
+                    //Second Ad pic upload
+                    
+                    $picurl2 = $_FILES['file2']['name'];
+                    $tmp = $_FILES['file2']['tmp_name'];
+                    move_uploaded_file($tmp,"../files/adpics/adpics".$picurl2);
+    
+                    //Insert Data Into firebase Realtime Database
+                    
+                    $postData = [
+                        "phonenumber" => $phonenumber,
+                        "id" => $accId,
+                        "adtitle" => $adtitle,
+                        "picurl" => $picurl,
+                        "price" => $price,
+                        "description" => $Bizdescription,
+                        "location" => $location,
+                        "longitude" => $longitude,
+                        "latitude" => $latitude,
+                        "picurl2" => $picurl2,
+                        "accountName" => $accountName,
+                    ];
+                    
+                    $ref_table = "Adverts";
+                    $postRef = $database->getReference($ref_table)->push($postData);
+                    
+                
+                    if($postRef){
+                
+                    //$errors['success'] ="Ad Creation Success.";
+                    echo "<script>alert('Ad Creation Success.')</script>"; 
+                    echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
+                
+                    }
+                    
+                    }else{
+                        // $errors['error'] ="Fill all required fields and choose a ad picture.";
+                        echo "<script>alert('Fill all required fields and choose ad pictures if necessary.')</script>"; 
+                        echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
+                    }
+                
+            }
+                          
+          }
         }
+
     }
 
-          
-
-              
-
-        }
 
 
 ?>
@@ -142,8 +142,8 @@
             <input class="passinput" type="text" name="description" placeholder="Enter advert Description"  value="<?php echo $description;?>"> <br><br>
             <input class="passinput" type="text" name="price" placeholder="Enter Price  (optional)" value="<?php echo $price; ?>"><br><br>
 
-           <input type="file" name="file" accept="image/*"> <br><br>
-           <input type="file" name="file2" accept="image/*"> 
+           <label style="color: black;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose ad picture</label> <br><br>
+           <label style="color: black;"> <input style="display: none;" type="file" name="file2" accept="image/*" >Choose ad picture 2 </label> 
             <br><br>
             
         <!--Error display-->

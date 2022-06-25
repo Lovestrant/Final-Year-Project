@@ -4,7 +4,7 @@
     //initializing values
     $accountname = $description = $location ="";
 
-    include_once('../db.php');
+    include_once('../FirebaseConfig/dbcon.php');
     //initializing errors array
     $errors = array("error" => "", "success" => "");
 
@@ -13,44 +13,81 @@
 
       //getting session variables
       $phonenumber = $_SESSION['phonenumber'];
-      $description = mysqli_real_escape_string($con, $_POST['description']);
-      $accountname = mysqli_real_escape_string($con, $_POST['bizname']);
-      $location = mysqli_real_escape_string($con, $_POST['location']);
+      $description = $_POST['description'];
+      $accountname = $_POST['bizname'];
+      $location = $_POST['location'];
       $profileurl = $_FILES['file']['name'];
      
 
         if(!empty($description) || !empty($description) || !empty($location) || !empty($profileurl)) {
 
-            
-        $sql1="SELECT * FROM bizaccounts where accountName = '$accountname' and phonenumber= '$phonenumber' Limit 1";
     
-		$result= mysqli_query($con,$sql1);
-		$queryResults= mysqli_num_rows($result);
 		
-		
-        if($queryResults) {
+        $ref_table ="bizaccounts";
+        $fetchData = $database->getReference($ref_table)->getValue();
+    
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['accountName']===$accountname && $row['phonenumber'] === $phonenumber) {
+                    $errors['error'] = "You have an account with the same name, Use a different name.";
+                }else{
 
-            $errors['error'] = "You have an account with the same name, Use a different name.";
-          
-        }else{
-
+                    $profileurl = $_FILES['file']['name'];
+                    $tmp = $_FILES['file']['tmp_name'];
+                    move_uploaded_file($tmp,"../files/bizprofiles/bizprofiles".$profileurl);
+        
+  
+                    $postData = [
+                        "phonenumber" => $phonenumber,
+                        "accountName" => $accountname,
+                        "description" => $description,
+                        "location" => $location,
+                        "profileurl" => $profileurl
+                    ];
+                    
+                    
+                    $postRef = $database->getReference($ref_table)->push($postData);
+            
+                
+                    if($postRef){
+                
+                     $errors['success'] ="Account Creation Success.";
+                         
+                    }else{
+                        $errors['error'] ="Failed, try again later"; 
+                    }
+                }
+                
+            }
+        }else {
 
             $profileurl = $_FILES['file']['name'];
             $tmp = $_FILES['file']['tmp_name'];
             move_uploaded_file($tmp,"../files/bizprofiles/bizprofiles".$profileurl);
 
-            $sql = "INSERT INTO bizaccounts(phonenumber, accountName, description,location,profileurl) 
-            values('$phonenumber', '$accountname','$description','$location','$profileurl');";
-            $res = mysqli_query($con,$sql);
+
+            $postData = [
+                "phonenumber" => $phonenumber,
+                "accountName" => $accountname,
+                "description" => $description,
+                "location" => $location,
+                "profileurl" => $profileurl
+            ];
             
+            
+            $postRef = $database->getReference($ref_table)->push($postData);
+    
         
-            if($res ==1){
+            if($postRef){
         
              $errors['success'] ="Account Creation Success.";
                  
-         
+            }else{
+                $errors['error'] ="Failed, try again later"; 
             }
-         }
+        }
+		
+   
         }else{
             $errors['error'] ="Fill all fields and choose a business profile picture.";
         }
@@ -111,7 +148,7 @@
             <input class="passinput" type="text" name="description" placeholder="Enter business Description"  value="<?php echo $description;?>"> <br><br>
             <input class="passinput" type="text" name="location" placeholder="Enter Business Location" value="<?php echo $location; ?>"><br><br>
 
-          <label style="color: pink;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose Business Profile picture</label> <br><br>
+          <label style="color: black;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose Business Profile picture</label> <br><br>
             
         <!--Error display-->
         <div><h5 style="color: red;"><?php echo $errors['error']; ?></h5></div>

@@ -3,7 +3,7 @@
 
     $_SESSION['acc_id'] = $_GET['acc_id'];
 
-    include_once('../db.php');
+    include_once('../FirebaseConfig/dbcon.php');
     //initializing errors array
     $errors = array("error" => "", "success" => "");
 
@@ -116,46 +116,41 @@
     
     if($_SESSION['phonenumber']){
 
-
-
-        include_once('../db.php');
+        include_once('../FirebaseConfig/dbcon.php');
           
         $phonenumber = $_SESSION['phonenumber'];
         $accId = $_GET['acc_id'];
       
-    
-            $sql="SELECT * FROM bizaccounts where phonenumber='$phonenumber' and id = '$accId'";
 
- 
-                   $data2= mysqli_query($con,$sql);
-                   $queryResults2= mysqli_num_rows($data2);
+        $ref_table ="bizaccounts";
+        $fetchData = $database->getReference($ref_table)->getValue();
+        if($fetchData >0) {
+        foreach($fetchData as $key =>$row){
+        if($row['phonenumber'] === $phonenumber && $key === $accId) {
+            $accountName = $row['accountName'];
+
+            echo "  
+            <div>
+                <h3 style='color: green;'>".$row['accountName']."</h3>
+                <a href='createadvert.php?acc_id=$accId'><button style='color: red;'>Create Advert</button></a>
+                <a href='vieworders.php?accountName=$accountName'><button style='color: blue;'>View Orders</button></a>
+                </div>
+
+            <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+            <img src='../files/bizprofiles/bizprofiles".$row['profileurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
+                    
+            </div>
+            ";
+            
+        }
+      }
+        }
+
                    
-         
-                   
-                    if($queryResults2 >0) {
-                              while($row = mysqli_fetch_assoc($data2)) {
-
-                                $accountName = $row['accountName'];
-                           
-                                echo "  
-                                <div>
-                                    <h3 style='color: green;'>".$row['accountName']."</h3>
-                                    <a href='createadvert.php?acc_id=$accId'><button style='color: red;'>Create Advert</button></a>
-                                    <a href='vieworders.php?accountName=$accountName'><button style='color: blue;'>View Orders</button></a>
-                                    </div>
-
-                                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-                                <img src='../files/bizprofiles/bizprofiles".$row['profileurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
-                                       
-                                </div>
-                              ";
-                              
-                            }
-                        }
-         }else{
-            echo "<script>alert('Your Session has expired.You need to login again')</script>";
-            echo "<script>location.replace('../index.php')</script>";
-         }
+    }else{
+    echo "<script>alert('Your Session has expired.You need to login again')</script>";
+    echo "<script>location.replace('../index.php')</script>";
+    }
 
                               
     ?>
@@ -201,7 +196,6 @@
 
     include_once('../FirebaseConfig/dbcon.php');
 
-        include_once('../db.php');
           
         $phonenumber = $_SESSION['phonenumber'];
         $accId = $_GET['acc_id'];
@@ -303,9 +297,9 @@
                              
     ?>
                     
-                 </div>
-             </div>
-         </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -317,33 +311,67 @@
 </html>
 
 <?php
-include_once('../db.php');
+    include_once('../FirebaseConfig/dbcon.php');
     
     if (isset($_POST['changeLocation'])) {
 
 
         //getting session variables
       
-        $lat = mysqli_real_escape_string($con, $_POST['lat']);
-        $long = mysqli_real_escape_string($con, $_POST['long']);
+        $lat =  $_POST['lat'];
+        $long = $_POST['long'];
       
      
         $postid = $_POST['hiddenid'];
-  
-  
-              $sql = "UPDATE adverts set latitude = '$lat', longitude='$long' where accId='$postid'";
-          
-              $res = mysqli_query($con,$sql);
-              
-          
-              if($res ==1){
-          
-               //$errors['success'] ="Ad Creation Success.";
-               echo "<script>alert('All account's Ads Cordinates changed success.')</script>"; 
-               echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$postid');</script>"; 
-           
-              }
-           
+
+                                  
+        $accId = $_GET['acc_id'];
+      
+        $ref_table ="Adverts";
+        $fetchData = $database->getReference($ref_table)->getValue();
+
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['id'] == $postid) {
+                    $uid = $key;
+                    $UpdateData = [
+                        'accountName' => $row['accountName'],
+                        'adtitle' => $adtitle,
+                        'description' => $row['description'],
+                        'id' => $row['id'],
+                        'latitude' => $lat,
+                        'location' => $row['location'],
+                        'longitude' => $long,
+                        'phonenumber' => $row['phonenumber'],
+                        'picurl' => $row['picurl'],
+                        'picurl2' => $row['picurl2'],
+                        'price' => $row['price']
+                  
+                    ];
+    
+                    // Create a key for a new post
+                    $ref_table = 'Adverts/'.$uid;
+                     $queryResult = $database->getReference($ref_table)->update($UpdateData);
+                     if($queryResult) {
+                        //$errors['success'] ="Ad Creation Success.";
+                        echo "<script>alert('All account's Ads Cordinates changed success.')</script>"; 
+                        echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$postid');</script>"; 
+
+                     }
+                }else {
+                    echo "<script>alert('Failed,No ads for this Account.')</script>"; 
+                    echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$postid');</script>"; 
+         
+                }
+
             }
+        }else {
+            echo "<script>alert('Failed,No ads for this Account.')</script>"; 
+            echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$postid');</script>"; 
+
+        }
+            
+           
+    }
 
 ?>

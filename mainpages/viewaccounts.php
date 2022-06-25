@@ -4,7 +4,7 @@
     //initializing values
     $accountname = $description = $location ="";
 
-    include_once('../db.php');
+    include_once('../FirebaseConfig/dbcon.php');
     //initializing errors array
     $errors = array("error" => "", "success" => "");
 
@@ -13,9 +13,9 @@
 
       //getting session variables
       $phonenumber = $_SESSION['phonenumber'];
-      $description = mysqli_real_escape_string($con, $_POST['description']);
-      $accountname = mysqli_real_escape_string($con, $_POST['bizname']);
-      $location = mysqli_real_escape_string($con, $_POST['location']);
+      $description = $_POST['description'];
+      $accountname = $_POST['bizname'];
+      $location = $_POST['location'];
       $profileurl = $_FILES['file']['name'];
      
 
@@ -98,54 +98,50 @@
         <h4 id="h4">Your Business Accounts:</h4>
 <?php
 
-  include_once('../db.php');
+include_once('../FirebaseConfig/dbcon.php');
   $phonenumber = $_SESSION['phonenumber'];
 
-  $sql2="SELECT * FROM bizaccounts where phonenumber= '$phonenumber'";
-  
-  $data2= mysqli_query($con,$sql2);
-  $queryResults2= mysqli_num_rows($data2);
+  $ref_table ="bizaccounts";
+  $fetchData = $database->getReference($ref_table)->getValue();
 
-
-        if($queryResults2 >0) {
-           while($row = mysqli_fetch_assoc($data2)) {
-
-      
-                    echo "
+  if($fetchData >0) {
+      foreach($fetchData as $key =>$row){
+        if($row['phonenumber'] === $phonenumber) {
+            echo "
                     
-                    <div style='margin-bottom: 5%;text-align:centre;margin-left: 15%;'>
+            <div style='margin-bottom: 5%;text-align:centre;margin-left: 15%;'>
+           
+            <div style='text-transform: uppercase;color: green;margin-left:0%; text-align:centre;
+            margin-top: 4%;margin-bottom: 4%;'>
+            <h2 style='text-decoration: underline;text-align: 'centre';'>".$row['accountName']."</h2>
+            <div>
+            
+            <img src='../files/bizprofiles/bizprofiles".$row['profileurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
                    
-                    <div style='text-transform: uppercase;color: green;margin-left:10%; text-align:centre;
-                    margin-top: 4%;margin-bottom: 4%;'>
-                    <h2 style='text-decoration: underline;'>".$row['accountName']."</h2>
-                    <div>
-                    
-                    <img src='../files/bizprofiles/bizprofiles".$row['profileurl']."' style = 'width: 20%;border-radius:100%; height:auto;'>
-                           
-                    </div>
+            </div>
 
-                    <div style='margin-top: -1%; '>
-                   
-                        <p>".$row['description']."</p>
-                        <a href='intobizacc.php?acc_id=".$row['id']."'>
-                        <button style='margin-left: 10%;margin-top:19px; color:red;'>View</button>
-                        </a>
+            <div style='margin-top: 1%; '>
+           
+                <p>".$row['description']."</p>
+                <a href='intobizacc.php?acc_id=".$key."'>
+                <button style='margin-left: 0%;margin-top:19px; color:red;'>View</button>
+                </a>
 
-                        <a href='viewchatmates.php?acc_id=".$row['id']."'>
-                        <button style='margin-left: 10%;margin-top:19px; color:red;'>messages</button>
-                        </a>
+                <a href='viewchatmates.php?acc_id=".$key."'>
+                <button style='margin-left: 10%;margin-top:19px; color:red;'>messages</button>
+                </a>
 
-                     </div>
-                    </div>
-                    
-                    </div>
-                    ";
+                <hr>
+             </div>
+            </div>
+            
+            </div>
+            ";
 
-
-                
-
-          }
         }
+      }
+    }
+
 
 ?>
 
