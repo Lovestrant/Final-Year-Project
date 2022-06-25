@@ -1,49 +1,42 @@
 <?php 
     session_start();
 
-
+    include_once('../FirebaseConfig/dbcon.php');
 
     if (isset($_POST['submitChat'])) {
 
 
         //getting session variables
      
-        $text = mysqli_real_escape_string($con, $_POST['chatsInput']);
+        $text = $_POST['chatsInput'];
         $phonenumber = $_SESSION['phonenumber'];
         $fullname = $_SESSION['fullname'];
         
         $seller = $_POST['hiddenid'];
-
-
-  
-        $sql = "SELECT * FROM adverts where id='$seller'";
-        $data2= mysqli_query($con,$sql);
-        $queryResults2= mysqli_num_rows($data2);
-        
-  
-        
-         if($queryResults2 >0) {
-                   while($row = mysqli_fetch_assoc($data2)) {
-                
-                    $accountName = $row['accountName'];
-                    $sellerPhonenumber = $row['phonenumber'];
+        $ref_table ="Adverts";
+        $fetchData = $database->getReference($ref_table)->getValue();
+    
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+                if($row['id'] === $seller) {
+                    $ref_table ="chats";
+                    $postData = [
+                        "buyerPhonenumber" => $phonenumber,
+                        "fullname" => $fullname,
+                        "sellerPhonenumber" => $row['phonenumber'],
+                        "accountName" => $row['accountName'],
+                        "message" => $text,
+                    ];
                     
-                    $sql = "INSERT INTO chats(buyerPhonenumber,fullname,sellerPhonenumber,accountName,message) 
-                    VALUES('$phonenumber','$fullname','$sellerPhonenumber','$accountName','$text');";
-
-                    $res = mysqli_query($con,$sql);
-                                        
-                                    
-                    if($res ==1){
-
-                   
-                    echo "<script>location.replace('../mainpages/chat.php?seller=$seller');</script>";    
-                        
-                        }
-
-
-                   }
-               }
+                    
+                    $postRef = $database->getReference($ref_table)->push($postData);
+                    if($postRef) {
+                        echo "<script>location.replace('../mainpages/chat.php?seller=$seller');</script>"; 
+                    }
+                }
+            }
+        }
+        
                 
     }
 
@@ -55,7 +48,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zero The market</title>
+    <title>Location-Based E-commerce System</title>
 
     <!--Css link-->
     <link rel="stylesheet" type="text/css" href="../css/chat.css">
@@ -103,7 +96,7 @@
     </div>
 
 <div class="container" id="chatbox">
-<div class='col-sm-6' id='chatboxBody'>
+<div class='col-sm-12' id='chatboxBody'>
     <?php  
         
     $phonenumber = $_SESSION['phonenumber'];
@@ -125,7 +118,7 @@
                 $sellerPhonenumber = $row['phonenumber'];
 
                 echo"
-                <div class='row'>
+                <div class='row'  style='display: sticky; margin-top: 10px;'>
                 <div class='col-sm-12' id='chatboxHeader'>
                     <h3 id='h3top'>".$accountName."</h3>
                     <p id='ptop'>Phone: ".$sellerPhonenumber."</p>
@@ -136,9 +129,11 @@
                 $ref_table ="chats";
                 $fetchData = $database->getReference($ref_table)->getValue(); 
 
+                if($fetchData >0) {
+                    foreach($fetchData as $key =>$row){
                 if($row['buyerPhonenumber'] === $phonenumber && $row['accountName'] === $accountName && $row['sellerPhonenumber'] === $sellerPhonenumber) {
                             
-                    if($row['buyerPhonenumber']== $_SESSION['phonenumber'] && !$row['additional']){
+                    if($row['buyerPhonenumber']=== $_SESSION['phonenumber']){
                                      
                         echo "
                                     
@@ -152,7 +147,7 @@
                     
                         ";
                     
-                    }elseif($row['additional'] ==1){
+                    }else{
                         echo "
                                     
                                     
@@ -164,14 +159,14 @@
                     
                         ";
                     
-                    }else {
-
                     }
                 }
             }
-
         }
     }
+
+}
+}
 
     ?>
 
@@ -183,12 +178,12 @@
     </div>
 
   
-    <div class="row" id="createText">
+    <div class="container" id="createText">
                 <form action="chat.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name= "hiddenid" value=<?php $id= $_GET['seller']; echo $id; ?>> <!-- Hidden input-->
                 <p>
-                <input id="chatinput" type="text" name="chatsInput" placeholder="Type message" required>
-                <button name="submitChat" id="btnChat">Chat</button>
+                <input style="display: none;margin-top: 1%;" id="chatinput" type="text" name="chatsInput" placeholder="Type message" required>
+                <button name="submitChat" id="btnChat" style="width: 90%;height:2%; margin: 1%;">Chat</button>
                 </p>
                 </form>
             </div>
