@@ -1,5 +1,7 @@
 <?php 
     session_start();
+
+
 ?>
 
 
@@ -87,13 +89,17 @@ if($_SESSION['phonenumber']){
 
     $dist = calculateDistance($sellerLatitude, $sellerLongitude, $latitude, $longitude);
     if($dist < 3){
-        if(!$row['picurl'] && !$row['picurl2']){
+        if(!$row['picurl'] && !$row['picurl2'] ){
             echo "  
             <div>
             <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
             <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-                <h3 style='color: green;'>".$row['adtitle']."</h3>
-                
+            
+            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
+            
+            <h3 style='color: green;'>".$row['adtitle']."</h3>
+
+
             </div>
 
             <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
@@ -115,7 +121,10 @@ if($_SESSION['phonenumber']){
             <div>
             <h2 style='color: red;'>".$row['accountName']."</h2>
             <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-                <h3 style='color: green;'>".$row['adtitle']."</h3>
+            
+            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
+            
+            <h3 style='color: green;'>".$row['adtitle']."</h3>
                 
             </div>
 
@@ -137,7 +146,10 @@ if($_SESSION['phonenumber']){
             <div>
             <h2 style='color: red;'>".$row['accountName']."</h2>
             <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-                <h3 style='color: green;'>".$row['adtitle']."</h3>
+           
+            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>   
+           
+            <h3 style='color: green;'>".$row['adtitle']."</h3>
                 
             </div>
 
@@ -160,7 +172,12 @@ if($_SESSION['phonenumber']){
             <div>
             <h2 style='color: red;'>".$row['accountName']."</h2>
             <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-                <h3 style='color: green;'>".$row['adtitle']."</h3>
+      
+
+            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
+
+            
+            <h3 style='color: green;'>".$row['adtitle']."</h3>
                 
             </div>
 
