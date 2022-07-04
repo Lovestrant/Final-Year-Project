@@ -1,7 +1,12 @@
 <?php 
     session_start();
 
+    $_SESSION['longitude'] = $_GET['long'];
+    $_SESSION['latitude'] = $_GET['lat'];
 
+    //latitude and longitude
+    $_SESSION['latitude'] = $_GET['lat'];
+    $_SESSION['longitude'] = $_GET['long'];
 ?>
 
 
@@ -167,7 +172,7 @@ if($_SESSION['phonenumber']){
            
           ";
 
-        } elseif($row['picurl'] && $row['picurl2']){
+        } elseif($row['picurl'] && $row['picurl2']) {
             echo "  
             <div>
             <h2 style='color: red;'>".$row['accountName']."</h2>
@@ -198,9 +203,7 @@ if($_SESSION['phonenumber']){
 
 
         }
-       
-       
-      
+        
     }
 
 

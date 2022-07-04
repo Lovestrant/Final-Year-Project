@@ -186,7 +186,7 @@
       </div>
     <div class="col-sm-4">
     <a href="businessAccount.php">
-    <button style="color: green;margin-bottom: 2%;">Create new Business Account</button>
+    <button id="viewaccounts" style="color: green;margin-bottom: 2%;">Create new Business Account</button>
     </a>
 
     </div>
