@@ -17,36 +17,53 @@
     $accId = $_POST['hiddenid'];
 
 
-    $sql="SELECT * FROM bizaccounts where phonenumber='$phonenumber' and id = '$accId'";
+    $ref_table ="bizaccounts";
+    $fetchData = $database->getReference($ref_table)->getValue();
+    if($fetchData >0) {
+        foreach($fetchData as $key =>$row){
+            if($row['phonenumber'] === $phonenumber && $key === $accId) { 
 
-        $data= mysqli_query($con,$sql);
-        $queryResults= mysqli_num_rows($data);
-        
-        
-        if($queryResults >0) {
+            $imgurl = $_FILES['file']['name'];
+            $tmp = $_FILES['file']['tmp_name'];
+            move_uploaded_file($tmp,"../files/bizprofiles/bizprofiles".$imgurl);
+
+            $uid = $key;
+            $UpdateData = [
+                "accountName" => $row['accountName'],
+                "description" => $row['description'],
+                "location" => $row['location'],
+                'phonenumber' => $row['phonenumber'],
+                "profileurl" => $imgurl,
           
+            ];
 
+            $postData = [
+            
+                "accountName" => $row['accountName'],
+                "description" => $row['description'],
+                "location" => $row['location'],
+                'phonenumber' => $row['phonenumber'],
+                "profileurl" => $imgurl,
+            
+            ];
+            
+
+            // Create a key for a new post
+            $ref_table = 'bizaccounts/'.$uid;
+             $queryResult = $database->getReference($ref_table)->update($UpdateData);
+          
+            if($queryResult) {
+                echo "<script>alert('Success')</script>"; 
+                echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$key');</script>"; 
+           
+            }else {
+                echo "<script>alert('Failed.')</script>"; 
+                echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$key');</script>"; 
               
-
-                    $imgurl = $_FILES['file']['name'];
-                    $tmp = $_FILES['file']['tmp_name'];
-                    move_uploaded_file($tmp,"../files/bizprofiles/bizprofiles".$imgurl);
-
-                    $sql = "UPDATE bizaccounts set profileurl = '$imgurl' where phonenumber= '$phonenumber' and id= '$accId'";
-                    $res = mysqli_query($con,$sql);
-                    
-                
-                    if($res ==1){
-                
-                    $errors['success'] ="Profile Updated Successfully.";
-                    echo "<script>location.replace('../mainpages/intobizacc.php?acc_id=$accId');</script>";    
-                        
-                        }
-                 
-                
-            }else{
-                $errors['error'] ="No such User.";
             }
+        } 
+      }
+    }
         }
 
 
@@ -69,12 +86,12 @@
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 
 <style>
-.zoom2{
+.zoom2 {
     width:45%;
     height:auto;
     transition: transform ease-in-out 0.3s;
     }
-.zoom2:hover{
+.zoom2:hover {
     transform: scale(1.5);
     text-align: center;
     justify-content: center;
@@ -84,7 +101,7 @@
     height:auto;
     transition: transform ease-in-out 0.3s;
     }
-.zoom:hover{
+.zoom:hover {
     transform: scale(1.1);
     text-align: center;
     justify-content: center;
@@ -114,7 +131,7 @@
   
     <?php 
     
-    if($_SESSION['phonenumber']){
+    if($_SESSION['phonenumber']) {
 
         include_once('../FirebaseConfig/dbcon.php');
           

@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zero The market</title>
+    <title>Location-Based E-commerce System</title>
 
     <!--Css link-->
     <link rel="stylesheet" type="text/css" href="../css/bizaccounts.css">
@@ -46,73 +46,49 @@ include_once('../FirebaseConfig/dbcon.php');
   $fetchData = $database->getReference($ref_table)->getValue();
 
     if($fetchData >0) {
-        foreach($fetchData as $key =>$row){
-            if($row['sellerPhonenumber'] == $phonenumber) {
+        foreach($fetchData as $key1 =>$row){
 
-            echo "
-                    
-            <div style='margin-bottom: 5%;text-align:centre;'>
-           
-            <div style='text-transform: uppercase;color: green;margin-left:10%; text-align:centre;
-            margin-top: 4%;margin-bottom: 4%;'>
-            <h4>".$row['fullname']."</h4>
-            <p style='margin-top: -1%;'>".$row['buyerPhonenumber']."</p>
-            <div>
-           
+            $ref_table ="bizaccounts";
+            $fetchData = $database->getReference($ref_table)->getValue();
+            if($fetchData >0) {
+                foreach($fetchData as $key =>$TheRow){
+                if($row['sellerPhonenumber'] == $phonenumber && $key === $_GET['acc_id'] && $TheRow['accountName'] === $row['accountName']) {
+
+                    echo "
+                            
+                    <div style='margin-bottom: 5%;text-align:centre;'>
                    
-            </div>
-
-            <div style='display:flex;margin-top: -1%;text-transform: none;margin-right: 10%;'>
-            <a href='chatbiz.php?messageId=".$row['id']."'>
-            <p>".$row['message']."</p>
-            </a> 
-                
-               
-               
-            </div>
-          
-            
-            </div>
-            ";
-
+                    <div style='text-transform: uppercase;color: green;margin-left:10%; text-align:centre;
+                    margin-top: 4%;margin-bottom: 4%;'>
+                    <h4>".$row['fullname']."</h4>
+                    <p style='margin-top: -1%;'>".$row['buyerPhonenumber']."</p>
+                    <div>
+                   
+                           
+                    </div>
+        
+                    <div style='display:flex;margin-top: -1%;text-transform: none;margin-right: 10%;'>
+                    <a href='chatbiz.php?messageId=".$row['buyerPhonenumber']."&acc_Id=".$_GET['acc_id']."&chat_Id=".$key1."'>
+                    <p>".$row['message']."</p>
+                    </a> 
+                        
+                       
+                       
+                    </div>
+                  
+                    
+                    </div>
+                    ";
+        
+                    }
+                }
             }
+
+
         }
     }
 
 
-        if($queryResults2 >0) {
-           while($row = mysqli_fetch_assoc($data2)) {
-               echo "
-               <h4 id='h4'>Messages to <label style='color:red;'>".$row['accountName']."</label> Business Accounts:</h4>
-               ";
-
-            $sellerPhonenumber = $row['phonenumber'];
-            $accountName = $row['accountName'];
-
-            $sql="SELECT * FROM chats where sellerPhonenumber= '$sellerPhonenumber' and accountName = '$accountName'  group by buyerPhonenumber";
-            
-            $data2= mysqli_query($con,$sql);
-            $queryResults2= mysqli_num_rows($data2);
-
-
-            
-
-        if($queryResults2 >0) {
-           while($row = mysqli_fetch_assoc($data2)) {
-               
-
-
-
-
-           }
-        }
-      
-                   
-
-                
-
-          }
-        }
 
 ?>
 
