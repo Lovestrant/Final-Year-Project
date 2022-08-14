@@ -3,10 +3,80 @@
 
     $_SESSION['longitude'] = $_GET['long'];
     $_SESSION['latitude'] = $_GET['lat'];
+    include_once('../FirebaseConfig/dbcon.php');  
+    //Add to cart
+    if(isset($_POST['addtocart'])){
+           
+        $buyerPhone = $_SESSION['phonenumber'];
+        $productKey = $_POST['productKey'];
+        $lat = $_POST['latitude'];
+        $long = $_POST['longitude'];
+    
+        $ref_table ="Adverts";
+        $fetchData = $database->getReference($ref_table)->getValue();
 
-    //latitude and longitude
-    $_SESSION['latitude'] = $_GET['lat'];
-    $_SESSION['longitude'] = $_GET['long'];
+       
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+            // if($row['id']===$productKey){
+                $accountName = $row['accountName'];
+                $adtitle = $row['adtitle'];
+                $description = $row['description'];
+                $id = $productKey;
+                $SellerPhonenumber = $row['phonenumber'];
+                $picurl = $row['picurl'];
+                $picur2 = $row['picurl2'];
+                $price = $row['price'];
+                
+                 
+                $postData = [
+                   "phonenumber" => $SellerPhonenumber,
+                   "picurl" => $picurl,
+                   "picurl2" => $picur2,
+                   "price" => $price,
+                   "accountName" => $accountName,
+                   "adtitle" => $adtitle,
+                   "description" => $description,
+                   "id" => $id,
+                   "buyerPhone" => $buyerPhone
+               ];
+               
+               $ref_table = "cart";
+               $postRef = $database->getReference($ref_table)->push($postData);
+               
+           
+               if($postRef){
+                   //echo "<script>Success</script>";
+
+                     
+            }else{
+            //echo "<script>Failed</script>";
+            // }   
+            }        
+    
+            }
+        }
+     }
+
+     //remove from cart
+     if(isset($_POST['removefromcart'])){
+        $buyerPhone = $_SESSION['phonenumber'];
+        $postid = $_POST['postid'];
+
+        $ref_table ="cart";
+        $fetchData = $database->getReference($ref_table)->getValue();
+
+       
+        if($fetchData >0) {
+            foreach($fetchData as $key =>$row){
+             if($row['buyerPhone'] === $buyerPhone){
+                $ref_table = "cart/".$productKey;
+                $DeleteQueryResult = $database->getReference($ref_table)->remove();
+             }
+            }
+        }
+
+     }
 ?>
 
 
@@ -82,7 +152,7 @@ if($_SESSION['phonenumber']){
     $fetchData = $database->getReference($ref_table)->getValue();
 
     if($fetchData >0) {
-        foreach($fetchData as $key =>$row){
+    foreach($fetchData as $key =>$row){
     //latitude and longitude
     $latitude = $_SESSION['latitude'] = $_GET['lat'];
     $longitude = $_SESSION['longitude'] = $_GET['long'];
@@ -94,7 +164,21 @@ if($_SESSION['phonenumber']){
 
     $dist = calculateDistance($sellerLatitude, $sellerLongitude, $latitude, $longitude);
     if($dist < 3){
-        if(!$row['picurl'] && !$row['picurl2'] ){
+
+        $ref_table2 ="cart";
+        $fetchData2 = $database->getReference($ref_table2)->getValue();
+         $btn ="<button name='addtocart' style='color: purple;'>Add to the cart</button>";
+     
+        foreach($fetchData2 as $key2 =>$therow){
+            if($therow['id']===$key){
+              
+                $btn= "<button name='removefromcart' style='color: red;'>Remove from Cart</button>";
+         
+            }
+        }
+      
+
+        if(!$row['picurl'] && !$row['picurl2']){
             echo "  
             <div>
             <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
@@ -113,7 +197,7 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div style='text-align: centre;'>
             <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$key."'><button style='color: purple;'>Order</button></a>
+            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
             </div>
             <hr>
             </div>
@@ -139,7 +223,7 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
             <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$row['id']."'><button style='color: purple;'>Order</button></a>
+            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
             </div>
             <hr>
             </div>
@@ -164,7 +248,7 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
             <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$row['id']."'><button style='color: purple;'>Order</button></a>
+            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
             </div>
             <hr>
             </div>
@@ -192,16 +276,25 @@ if($_SESSION['phonenumber']){
             <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$row['id']."'><button style='color: purple;'>Order</button></a>
+
+            <div style='display=flex;text-align:start;'>
+            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 5%;'>Chat With Seller</button></a>
+           
+           <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+                <input type='hidden' name='latitude' value='$latitude'>
+                <input type='hidden' name='longitude' value='$longitude'>
+                <input type='hidden' name='productKey' value='$key'>
+                <input type='hidden' name='postid' value='$postid'>
+                $btn
+             
+           </form>
+             </div>
             </div>
             <hr>
             </div>
 
            
           ";
-
-
         }
         
     }
@@ -219,3 +312,4 @@ if($_SESSION['phonenumber']){
 
 </body>
 </html>
+

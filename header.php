@@ -1,3 +1,23 @@
+<?php 
+include_once('../FirebaseConfig/dbcon.php');  
+$buyerPhone = $_SESSION['phonenumber'];
+
+$ref_table ="cart";
+$fetchData = $database->getReference($ref_table)->getValue();
+
+
+if($fetchData >0) {
+    foreach($fetchData as $key =>$row){
+        $num = 0;
+      if($row['buyerPhone'] ===$buyerPhone){
+         $num = count($fetchData);
+      }
+    }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +74,7 @@
   
   <button id="radius" onClick = "toRadius()">Radius</button>
   <a href="profile.php"><button>Profile</button></a>
+  <a href="cart.php"><button>Cart <span style="color: red;"><?php echo $num; ?></span></button></a>
   
 </div>
   

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$phonenumber =$password = '';
+$phonenumber=$regNo =$password = '';
 $errors = array("phonenumberErr" => "", "success" => "");
 
 
@@ -104,7 +104,7 @@ if(isset($_POST['submit'])){
     <div class="row">
     <div class="col-sm-12" id="topparagraph">
             <form action="index.php" method="post">
-                <input class="reginput" type="number" name ="phonenumber" placeholder="Enter your Phone Number" value="<?php echo $regNo;?>"><br><br>
+                <input class="reginput" type="text" name ="phonenumber" placeholder="Enter your Phone Number" value="<?php echo $regNo;?>"><br><br>
                 <input  class="passinput" type="password" name = "password" placeholder ="Enter password" value="<?php echo $password;?>"> <br><br>
             
             <!--Error display-->
