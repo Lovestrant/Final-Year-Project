@@ -4,13 +4,13 @@ $buyerPhone = $_SESSION['phonenumber'];
 
 $ref_table ="cart";
 $fetchData = $database->getReference($ref_table)->getValue();
-
+$num = 0;
 
 if($fetchData >0) {
     foreach($fetchData as $key =>$row){
-        $num = 0;
+     
       if($row['buyerPhone'] ===$buyerPhone){
-         $num = count($fetchData);
+        $num = count($fetchData);    
       }
     }
 }

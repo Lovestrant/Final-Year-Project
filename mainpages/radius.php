@@ -18,7 +18,7 @@
        
         if($fetchData >0) {
             foreach($fetchData as $key =>$row){
-            // if($row['id']===$productKey){
+            if($key===$productKey){
                 $accountName = $row['accountName'];
                 $adtitle = $row['adtitle'];
                 $description = $row['description'];
@@ -45,12 +45,12 @@
                $postRef = $database->getReference($ref_table)->push($postData);
                
            
-               if($postRef){
-                   //echo "<script>Success</script>";
+            //    if($postRef){
+            //        //echo "<script>Success</script>";
 
                      
-            }else{
-            //echo "<script>Failed</script>";
+            // }else{
+            // echo "<script>Failed</script>";
             // }   
             }        
     
@@ -61,7 +61,7 @@
      //remove from cart
      if(isset($_POST['removefromcart'])){
         $buyerPhone = $_SESSION['phonenumber'];
-        $postid = $_POST['postid'];
+        $productKey = $_POST['postid'];
 
         $ref_table ="cart";
         $fetchData = $database->getReference($ref_table)->getValue();
@@ -167,15 +167,20 @@ if($_SESSION['phonenumber']){
 
         $ref_table2 ="cart";
         $fetchData2 = $database->getReference($ref_table2)->getValue();
+        //Default Look of the button
          $btn ="<button name='addtocart' style='color: purple;'>Add to the cart</button>";
-     
-        foreach($fetchData2 as $key2 =>$therow){
-            if($therow['id']===$key){
-              
-                $btn= "<button name='removefromcart' style='color: red;'>Remove from Cart</button>";
-         
+         $HiddenInput = "";
+         if($fetchData2 >0){
+            foreach($fetchData2 as $key2 =>$therow){
+                if($therow['id']===$key){
+                   $HiddenInput= "<input type='hidden' name='postid' value='$key2'>";
+                  //Change color of button whenever it is already in cart
+                    $btn= "<button name='removefromcart' style='color: red;'>Remove from Cart</button>";
+             
+                    
+                }
             }
-        }
+         }
       
 
         if(!$row['picurl'] && !$row['picurl2']){
@@ -197,7 +202,16 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div style='text-align: centre;'>
             <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
+           
+            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+            <input type='hidden' name='latitude' value='$latitude'>
+            <input type='hidden' name='longitude' value='$longitude'>
+            <input type='hidden' name='productKey' value='$key'>
+            $HiddenInput
+            $btn
+         
+            </form>
+
             </div>
             <hr>
             </div>
@@ -223,7 +237,16 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
             <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
+           
+            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+            <input type='hidden' name='latitude' value='$latitude'>
+            <input type='hidden' name='longitude' value='$longitude'>
+            <input type='hidden' name='productKey' value='$key'>
+            $HiddenInput
+            $btn
+         
+            </form>  
+
             </div>
             <hr>
             </div>
@@ -248,7 +271,15 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
             <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
-            <a href='order.php?postId=".$key."'><button style='color: purple;'>Add to cart</button></a>
+            
+            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+            <input type='hidden' name='latitude' value='$latitude'>
+            <input type='hidden' name='longitude' value='$longitude'>
+            <input type='hidden' name='productKey' value='$key'>
+            $HiddenInput
+            $btn
+         
+            </form>
             </div>
             <hr>
             </div>
@@ -284,7 +315,7 @@ if($_SESSION['phonenumber']){
                 <input type='hidden' name='latitude' value='$latitude'>
                 <input type='hidden' name='longitude' value='$longitude'>
                 <input type='hidden' name='productKey' value='$key'>
-                <input type='hidden' name='postid' value='$postid'>
+                $HiddenInput
                 $btn
              
            </form>

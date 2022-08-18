@@ -58,28 +58,28 @@ if(isset($_POST['submit'])){
             
             $postRef = $database->getReference($ref_table)->push($postData);
 	
-		if($postRef){
+            if($postRef){
 
-        //set session variables
-        $_SESSION['fullname'] = "$fullname";
-        $_SESSION['phonenumber'] = "$phonenumber";
-      
+                //set session variables
+                $_SESSION['fullname'] = $fullname;
+                $_SESSION['phonenumber'] = $phonenumber;
+            
 
-        $errors['success'] = "Registration successful. You are now logged in.";
-		
-           
-      echo "
-      <script>
-              navigator.geolocation.getCurrentPosition(function(pos) {
-                  var ab = pos.coords.latitude;
-                  var ac = pos.coords.longitude;
-                  window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
-              });
-          
-      </script>
+                $errors['success'] = "Registration successful. You are now logged in.";
+                
+                
+                echo "
+                <script>
+                        navigator.geolocation.getCurrentPosition(function(pos) {
+                            var ab = pos.coords.latitude;
+                            var ac = pos.coords.longitude;
+                            window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                        });
+                    
+                </script>
 
-      "; 
-		}
+                "; 
+             }
 
         }
     }
