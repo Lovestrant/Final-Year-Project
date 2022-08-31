@@ -21,10 +21,10 @@ if(isset($_POST['submit'])){
     
         if($fetchData >0) {
             foreach($fetchData as $key =>$row){
-                if($row['phonenumber'] == $phonenumber) {
+                
                 if($row['phonenumber'] == $phonenumber && $row['password'] == $password1) {
                     
-
+                   
             
                     //set session variables
                     $_SESSION['fullname'] = $row['fullname'];
@@ -51,9 +51,7 @@ if(isset($_POST['submit'])){
                     $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
                 
                 }
-            }else {
-                $errors['phonenumberErr'] = "User doesn't exist, Create an account.";
-            }
+          
             }
     
 

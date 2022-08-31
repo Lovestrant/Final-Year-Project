@@ -10,7 +10,7 @@ if($fetchData >0) {
     foreach($fetchData as $key =>$row){
      
       if($row['buyerPhone'] ===$buyerPhone){
-        $num = count($fetchData);    
+        $num = $num+1;    
       }
     }
 }
@@ -46,6 +46,14 @@ if($fetchData >0) {
             
         }
 
+        function Refresh() {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                                var ab = pos.coords.latitude;
+                                var ac = pos.coords.longitude;
+                                window.open('../mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                            });
+        }
+
     </script>
   
 
@@ -74,8 +82,8 @@ if($fetchData >0) {
   
   <button id="radius" onClick = "toRadius()">Radius</button>
   <a href="profile.php"><button>Profile</button></a>
-  <a href="cart.php"><button>Cart <span style="color: red;"><?php echo $num; ?></span></button></a>
-  
+  <a href="cart.php"><button>Cart <span style="color: red;"><?php echo $num; ?></span></button></a>  
+  <button id="radius" onClick = "Refresh()">Refresh</button>
 </div>
   
 </div> 

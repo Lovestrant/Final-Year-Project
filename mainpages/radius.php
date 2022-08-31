@@ -90,6 +90,7 @@
 
     <!--Css link-->
     <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/home.css">
     <!--Bootstrap css Links -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!--Bootstrap JS Links -->
@@ -168,14 +169,14 @@ if($_SESSION['phonenumber']){
         $ref_table2 ="cart";
         $fetchData2 = $database->getReference($ref_table2)->getValue();
         //Default Look of the button
-         $btn ="<button name='addtocart' style='color: purple;'>Add to the cart</button>";
+         $btn ="<button name='addtocart' id='viewaccounts' style='color: purple;'>Add to the cart</button>";
          $HiddenInput = "";
          if($fetchData2 >0){
             foreach($fetchData2 as $key2 =>$therow){
-                if($therow['id']===$key){
+                if($therow['id']===$key && $therow['buyerPhone']===$phonenumber){
                    $HiddenInput= "<input type='hidden' name='postid' value='$key2'>";
                   //Change color of button whenever it is already in cart
-                    $btn= "<button name='removefromcart' style='color: red;'>Remove from Cart</button>";
+                    $btn= "<button name='removefromcart'id='viewaccounts' style='color: red;'>Remove from Cart</button>";
              
                     
                 }
@@ -200,8 +201,8 @@ if($_SESSION['phonenumber']){
            
             <p style='color: black;font-size:20px; margin-top:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div style='text-align: centre;'>
-            <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
+            <div style='display: flex;text-align:centre;'>
+            <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
            
             <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
             <input type='hidden' name='latitude' value='$latitude'>
@@ -235,8 +236,8 @@ if($_SESSION['phonenumber']){
             <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
             <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
+            <div style='display: flex;text-align:centre;'>
+            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
            
             <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
             <input type='hidden' name='latitude' value='$latitude'>
@@ -269,8 +270,8 @@ if($_SESSION['phonenumber']){
             <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
             <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;'>Chat With Seller</button></a>
+            <div style='display: flex;text-align:centre;'>
+            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
             
             <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
             <input type='hidden' name='latitude' value='$latitude'>
@@ -308,8 +309,8 @@ if($_SESSION['phonenumber']){
             <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
             <div>
 
-            <div style='display=flex;text-align:start;'>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 5%;'>Chat With Seller</button></a>
+            <div style='display: flex;text-align:centre;'>
+            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;'  id='viewaccounts'>Chat With Seller</button></a>
            
            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
                 <input type='hidden' name='latitude' value='$latitude'>
@@ -319,7 +320,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
            </form>
-             </div>
+           </div>
             </div>
             <hr>
             </div>

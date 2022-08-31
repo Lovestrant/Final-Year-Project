@@ -37,9 +37,56 @@ if(isset($_POST['submit'])){
         if($fetchData >0) {
             foreach($fetchData as $key =>$row){
                 if($row['phonenumber'] === $phonenumber) {
+                    $_SESSION['alreadyExists'] = "true";
                     $errors['passwordErr'] = "A user with same phonenumber already exist.";
                 }
             }
+
+           
+
+            if($_SESSION['alreadyExists'] != "true"){
+                $password1 = md5($password);//encryption of password
+                $securitykey2 = md5($securitykey);
+     
+                 //Insert Data Into firebase Realtime Database
+     
+                 $postData = [
+                     "fullname" => $fullname,
+                     "phonenumber" => $phonenumber,
+                     "securitykey" => $securitykey2,
+                     "password" => $password1,
+     
+                 ];
+                 
+                 
+                 $postRef = $database->getReference($ref_table)->push($postData);
+         
+                 if($postRef){
+     
+                     //set session variables
+                     $_SESSION['fullname'] = $fullname;
+                     $_SESSION['phonenumber'] = $phonenumber;
+                 
+     
+                     $errors['success'] = "Registration successful. You are now logged in.";
+                     
+                    
+
+                     echo "
+                     <script>
+                             navigator.geolocation.getCurrentPosition(function(pos) {
+                                 var ab = pos.coords.latitude;
+                                 var ac = pos.coords.longitude;
+                                 window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                             });
+                         
+                     </script>
+     
+                     "; 
+                  } 
+            }
+
+            $_SESSION['alreadyExists'] = "false";
      
         }else{
            $password1 = md5($password);//encryption of password
