@@ -120,6 +120,16 @@
     }
 </style>
 
+<script>
+    function resetCoordinates () { 
+        navigator.geolocation.getCurrentPosition(function(pos) {
+                                var ab = pos.coords.latitude;
+                                var ac = pos.coords.longitude;
+                                window.open('../mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                            }); 
+    }
+    setInterval(resetCoordinates, 300000);
+</script>
 
 </head>
 <body>
@@ -183,151 +193,262 @@ if($_SESSION['phonenumber']){
             }
          }
       
-
-        if(!$row['picurl'] && !$row['picurl2']){
-            echo "  
-            <div>
-            <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
-            <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-            
-            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
-            
-            <h3 style='color: green;'>".$row['adtitle']."</h3>
-
-
-            </div>
-
-            <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
-           
-            <p style='color: black;font-size:20px; margin-top:5%;margin-right:5%;'>".$row['description']."</p>  
-            <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div style='display: flex;text-align:centre;'>
-            <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
-           
-            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
-            <input type='hidden' name='latitude' value='$latitude'>
-            <input type='hidden' name='longitude' value='$longitude'>
-            <input type='hidden' name='productKey' value='$key'>
-            $HiddenInput
-            $btn
-         
-            </form>
-
-            </div>
-            <hr>
-            </div>
-
-           
-          ";
-
-        } elseif(!$row['picurl'] && $row['picurl2']){
-            echo "  
-            <div>
-            <h2 style='color: red;'>".$row['accountName']."</h2>
-            <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-            
-            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
-            
-            <h3 style='color: green;'>".$row['adtitle']."</h3>
+         if($row['phonenumber'] !=$phonenumber) {
+            if(!$row['picurl'] && !$row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 
-            </div>
-
-            <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-            <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
-            <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
-            <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div style='display: flex;text-align:centre;'>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
-           
-            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
-            <input type='hidden' name='latitude' value='$latitude'>
-            <input type='hidden' name='longitude' value='$longitude'>
-            <input type='hidden' name='productKey' value='$key'>
-            $HiddenInput
-            $btn
-         
-            </form>  
-
-            </div>
-            <hr>
-            </div>
-
-           
-          ";
-        } elseif($row['picurl'] && !$row['picurl2']){
-            echo "  
-            <div>
-            <h2 style='color: red;'>".$row['accountName']."</h2>
-            <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-           
-            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>   
-           
-            <h3 style='color: green;'>".$row['adtitle']."</h3>
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
                 
-            </div>
-
-            <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-            <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
-            <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
-            <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div style='display: flex;text-align:centre;'>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
-            
-            <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
-            <input type='hidden' name='latitude' value='$latitude'>
-            <input type='hidden' name='longitude' value='$longitude'>
-            <input type='hidden' name='productKey' value='$key'>
-            $HiddenInput
-            $btn
-         
-            </form>
-            </div>
-            <hr>
-            </div>
-
-           
-          ";
-
-        } elseif($row['picurl'] && $row['picurl2']) {
-            echo "  
-            <div>
-            <h2 style='color: red;'>".$row['accountName']."</h2>
-            <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-      
-
-            <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
-
-            
-            <h3 style='color: green;'>".$row['adtitle']."</h3>
-                
-            </div>
-
-            <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
-            <img class='zoom2' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 45%; height:auto;'>
-            <img class='zoom2' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 45%; height:auto;'>
-            <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
-            <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
-            <div>
-
-            <div style='display: flex;text-align:centre;'>
-            <a href='chat.php?seller=".$row['id']."'><button style='color: grey;'  id='viewaccounts'>Chat With Seller</button></a>
-           
-           <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+    
+    
+                </div>
+    
+                <div style='margin-top: 1%; text-align:centre; margin-bottom: 5%;'>
+               
+                <p style='color: black;font-size:20px; margin-top:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div style='display: flex;text-align:centre;'>
+                <a href='chat.php?seller=".$key."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
+               
+                <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
                 <input type='hidden' name='latitude' value='$latitude'>
                 <input type='hidden' name='longitude' value='$longitude'>
                 <input type='hidden' name='productKey' value='$key'>
                 $HiddenInput
                 $btn
              
-           </form>
-           </div>
-            </div>
-            <hr>
-            </div>
+                </form>
+    
+                </div>
+                <hr>
+                </div>
+    
+               
+              ";
+    
+            } elseif(!$row['picurl'] && $row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+                
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div style='display: flex;text-align:centre;'>
+                <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
+               
+                <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+                <input type='hidden' name='latitude' value='$latitude'>
+                <input type='hidden' name='longitude' value='$longitude'>
+                <input type='hidden' name='productKey' value='$key'>
+                $HiddenInput
+                $btn
+             
+                </form>  
+    
+                </div>
+                <hr>
+                </div>
+    
+               
+              ";
+            } elseif($row['picurl'] && !$row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+               
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>   
+               
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div style='display: flex;text-align:centre;'>
+                <a href='chat.php?seller=".$row['id']."'><button style='color: grey;margin-right: 10%;' id='viewaccounts'>Chat With Seller</button></a>
+                
+                <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+                <input type='hidden' name='latitude' value='$latitude'>
+                <input type='hidden' name='longitude' value='$longitude'>
+                <input type='hidden' name='productKey' value='$key'>
+                $HiddenInput
+                $btn
+             
+                </form>
+                </div>
+                <hr>
+                </div>
+    
+               
+              ";
+    
+            } elseif($row['picurl'] && $row['picurl2']) {
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+          
+    
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+    
+                
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 5%;'>
+                <img class='zoom2' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 45%; height:auto;'>
+                <img class='zoom2' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 45%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div>
+    
+                <div style='display: flex;text-align:centre;'>
+                <a href='chat.php?seller=".$row['id']."'><button style='color: grey;'  id='viewaccounts'>Chat With Seller</button></a>
+               
+               <form action='radius.php?lat=".$latitude."&long=".$longitude."' method='post'>
+                    <input type='hidden' name='latitude' value='$latitude'>
+                    <input type='hidden' name='longitude' value='$longitude'>
+                    <input type='hidden' name='productKey' value='$key'>
+                    $HiddenInput
+                    $btn
+                 
+               </form>
+               </div>
+                </div>
+                <hr>
+                </div>
+    
+               
+              ";
+            }
+         }else{
+            if(!$row['picurl'] && !$row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+                
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+    
+    
+                </div>
+    
+                <div style='margin-top: 1%; text-align:centre; margin-bottom: 2%;'>
+               
+                <p style='color: black;font-size:20px; margin-top:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div>
+                </div>
+                </div>
+                 <h2 style='color:green; '>Your own advert</h2>
+        
+                <hr>
+    
+               
+              ";
+    
+            } elseif(!$row['picurl'] && $row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+                
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 2%;'>
+                <img class='zoom' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 80%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div style='display: flex;text-align:centre;'>
+                <div>
+                </div>
+                </div>
+                 <h2 style='color:green; '>Your own advert</h2>
+        
+                <hr>
+    
+               
+              ";
+            } elseif($row['picurl'] && !$row['picurl2']){
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+               
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>   
+               
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 2%;'>
+                <img class='zoom' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 80%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div>
+                </div>
+                </div>
+                 <h2 style='color:green; '>Your own advert</h2>
+        
+                <hr>
+    
+               
+              ";
+    
+            } elseif($row['picurl'] && $row['picurl2']) {
+                echo "  
+                <div>
+                <h2 style='color: red;'>".$row['accountName']."</h2>
+                <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
+          
+    
+                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+    
+                
+                <h3 style='color: green;'>".$row['adtitle']."</h3>
+                    
+                </div>
+    
+                <div style='margin-top: 3%; text-align:centre; margin-bottom: 2%;'>
+                <img class='zoom2' src='../files/adpics/adpics".$row['picurl']."' style = 'width: 45%; height:auto;'>
+                <img class='zoom2' src='../files/adpics/adpics".$row['picurl2']."' style = 'width: 45%; height:auto;'>
+                <p style='color: black;font-size:20px; margin-left:5%;margin-right:5%;'>".$row['description']."</p>  
+                <p style='color: green;text-decoration:bold;font-size:20px; '>Price: ".$row['price']."</p>  
+                <div>
+                </div>
+                </div>
+                 <h2 style='color:green; '>Your own advert</h2>
+        
+                <hr>
+                   
+              ";
+            }
+         }
 
-           
-          ";
-        }
+
         
     }
 
@@ -335,6 +456,9 @@ if($_SESSION['phonenumber']){
 }
 }
 
+    }else{
+        echo "<script>alert('Your Session has expired.You need to login again')</script>";
+        echo "<script>location.replace('../index.php')</script>";
     }
 
                       

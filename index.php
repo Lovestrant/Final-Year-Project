@@ -9,7 +9,7 @@ $errors = array("phonenumberErr" => "", "success" => "");
     include_once('./FirebaseConfig/dbcon.php');
 
 if(isset($_POST['submit'])){
-   
+    $_SESSION['LoginSuccess'] = "false"; 
     $phonenumber = $_POST['phonenumber'];
     $password = $_POST['password'];
 
@@ -33,6 +33,7 @@ if(isset($_POST['submit'])){
                     //taking user to main page
                     $errors['success'] = "Login successful.";
                   
+                    $_SESSION['LoginSuccess'] = "true";
             
                   echo "
                     <script>
@@ -47,23 +48,22 @@ if(isset($_POST['submit'])){
                     "; 
                     
                     
-                }else{
-                    $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
-                
                 }
           
             }
-    
 
+            if($_SESSION['LoginSuccess'] != "true"){
+                $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
+            }
+    
         } else{
             $errors['phonenumberErr'] = "you don't have an account. Create account";  
         }     
 }
 
 
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
