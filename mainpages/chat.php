@@ -31,6 +31,18 @@
                     
                     $postRef = $database->getReference($ref_table)->push($postData);
                     if($postRef) {
+
+                        $receiver = $row['email'];
+                        $message = "You have a message from $fullname phone number: $phonenumber. <br> 
+                        Go to www.locationbasedecommerce.xyz to view it.";
+                        $subject = "Message From potential customer";
+                       $messageSent = $_SESSION['messageSent'];
+
+                        if($messageSent != "Message Sent") {
+                            mail($receiver,$subject,$message);
+                            $_SESSION['messageSent'] = "Message Sent";
+                        }
+                    
                         echo "<script>location.replace('../mainpages/chat.php?seller=$seller');</script>"; 
                     }
                 }
@@ -39,6 +51,8 @@
         
                 
     }
+
+
 
 ?>
 

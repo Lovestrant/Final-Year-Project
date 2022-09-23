@@ -185,6 +185,7 @@ if($_SESSION['phonenumber']){
             foreach($fetchData2 as $key2 =>$therow){
                 if($therow['id']===$key && $therow['buyerPhone']===$phonenumber){
                    $HiddenInput= "<input type='hidden' name='postid' value='$key2'>";
+                   
                   //Change color of button whenever it is already in cart
                     $btn= "<button name='removefromcart'id='viewaccounts' style='color: red;'>Remove from Cart</button>";
              
@@ -262,7 +263,7 @@ if($_SESSION['phonenumber']){
                 <hr>
                 </div>
     
-               
+                
               ";
             } elseif($row['picurl'] && !$row['picurl2']){
                 echo "  
@@ -334,8 +335,8 @@ if($_SESSION['phonenumber']){
                 </div>
                 <hr>
                 </div>
-    
-               
+
+                
               ";
             }
          }else{

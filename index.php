@@ -24,36 +24,44 @@ if(isset($_POST['submit'])){
                 
                 if($row['phonenumber'] == $phonenumber && $row['password'] == $password1) {
                     
-                   
-            
-                    //set session variables
-                    $_SESSION['fullname'] = $row['fullname'];
-                    $_SESSION['phonenumber'] = $row['phonenumber'];
-            
-                    //taking user to main page
-                    $errors['success'] = "Login successful.";
-                  
-                    $_SESSION['LoginSuccess'] = "true";
-            
-                  echo "
-                    <script>
-                            navigator.geolocation.getCurrentPosition(function(pos) {
-                                var ab = pos.coords.latitude;
-                                var ac = pos.coords.longitude;
-                                window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
-                            });
-                        
-                    </script>
-            
-                    "; 
+                    if($row['status'] === 'blocked') {
+                        $errors['phonenumberErr'] = "You got blocked by Admin, contact him at<br> Email: kemboilovestrant@gmail.com 
+                        <br> or WhatsApp: +254791638771 <br> for feedback.";  
+
+                        }else {
+
+                            //set session variables
+                            $_SESSION['fullname'] = $row['fullname'];
+                            $_SESSION['phonenumber'] = $row['phonenumber'];
+                            $_SESSION['email'] = $row['email'];
                     
+                            //taking user to main page
+                            $errors['success'] = "Login successful.";
+                        
+                            $_SESSION['LoginSuccess'] = "true";
+                    
+                            echo "
+                            <script>
+                                    navigator.geolocation.getCurrentPosition(function(pos) {
+                                        var ab = pos.coords.latitude;
+                                        var ac = pos.coords.longitude;
+                                        window.open('mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
+                                    });
+                                
+                            </script>
+                    
+                            ";   
+                        }
                     
                 }
           
             }
 
-            if($_SESSION['LoginSuccess'] != "true"){
+            if($_SESSION['LoginSuccess'] != "true" && $row['status'] != 'blocked'){
                 $errors['phonenumberErr'] = "Wrong combinations. Fill your details correctly.";
+            }else if($row['status'] == 'blocked') {
+                $errors['phonenumberErr'] = "You got blocked by Admin, contact him at<br> <p style='color: green;'>Email: kemboilovestrant@gmail.com </p>
+                <br> or <p style='color: green;'> WhatsApp: +254791638771 <br> for feedback. </p> <br>";    
             }
     
         } else{

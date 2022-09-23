@@ -194,11 +194,25 @@
       <div class="col-sm-4">
       <button  id="viewaccounts"><a href="viewaccounts.php"  id="viewaccounts">See your Business Accounts</a></button>
       </div>
+       
 
+</div>
+<div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
+<button  id="viewaccounts"><a href="admin.php">Raise Issue to Admin</a></button>
+
+ <?php 
+ 
+  if($_SESSION['phonenumber'] === "0791638771") {
+    echo "
+    <button  id='viewaccounts'><a href='users.php'>ADMIN PANEL</a></button>
+    ";
+  }
+ 
+ ?>
 </div>
 
 
-    <div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
+<div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
 <form action="../logout.php">
 <button style="color:red;">Log Out</button>
 </form>

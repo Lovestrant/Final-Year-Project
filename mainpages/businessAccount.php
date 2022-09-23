@@ -42,7 +42,8 @@
                         "accountName" => $accountname,
                         "description" => $description,
                         "location" => $location,
-                        "profileurl" => $profileurl
+                        "profileurl" => $profileurl,
+                        'status' => "Notblocked"
                     ];
                     
                     
@@ -71,7 +72,8 @@
                 "accountName" => $accountname,
                 "description" => $description,
                 "location" => $location,
-                "profileurl" => $profileurl
+                "profileurl" => $profileurl,
+                'status' => "Notblocked"
             ];
             
             

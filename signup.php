@@ -2,7 +2,7 @@
 session_start();
 
 //initializing input values
-$fullname = $password = $passwordconfirm = $securitykeyConfirm = $securitykey =$phonenumber = '';
+$fullname = $email= $password = $passwordconfirm = $securitykeyConfirm = $securitykey =$phonenumber = '';
 
 $errors = array("Err" => "", "passwordErr" => "", "success" => "");
 
@@ -16,6 +16,7 @@ if(isset($_POST['submit'])){
     $securitykeyConfirm = $_POST['securitykeyConfirm'];
     $securitykey = $_POST['securitykey'];
     $phonenumber = $_POST['phonenumber'];
+    $email = $_POST['email'];
    
     $password = $_POST['password'];
     $passwordconfirm = $_POST['passwordconfirm'];
@@ -24,7 +25,7 @@ if(isset($_POST['submit'])){
      if($password != $passwordconfirm || $securitykey != $securitykeyConfirm){
          $errors['passwordErr'] = "Password or security key with their confirmations does not match";
       
-     }elseif(empty($fullname) || empty($securitykey)|| empty($securitykeyConfirm)||empty($password) || empty($passwordconfirm) || empty($phonenumber)){
+     }elseif(empty($email) || empty($fullname) || empty($securitykey)|| empty($securitykeyConfirm)||empty($password) || empty($passwordconfirm) || empty($phonenumber)){
 
         $errors['Err'] = "Fill all the fields.";
      }else{
@@ -35,7 +36,7 @@ if(isset($_POST['submit'])){
         $fetchData = $database->getReference($ref_table)->getValue();
     
         if($fetchData >0) {
-            foreach($fetchData as $key =>$row){
+            foreach($fetchData as $key =>$row) {
                 if($row['phonenumber'] === $phonenumber) {
                     $_SESSION['alreadyExists'] = "true";
                     $errors['passwordErr'] = "A user with same phonenumber already exist.";
@@ -55,6 +56,8 @@ if(isset($_POST['submit'])){
                      "phonenumber" => $phonenumber,
                      "securitykey" => $securitykey2,
                      "password" => $password1,
+                     "email" => $email,
+                     'status' => "Notblocked"
      
                  ];
                  
@@ -66,7 +69,7 @@ if(isset($_POST['submit'])){
                      //set session variables
                      $_SESSION['fullname'] = $fullname;
                      $_SESSION['phonenumber'] = $phonenumber;
-                 
+                     $_SESSION['email'] = $email;
      
                      $errors['success'] = "Registration successful. You are now logged in.";
                      
@@ -99,7 +102,8 @@ if(isset($_POST['submit'])){
                 "phonenumber" => $phonenumber,
                 "securitykey" => $securitykey2,
                 "password" => $password1,
-
+                "email" => $email,
+                'status' => "Notblocked"
             ];
             
             
@@ -109,6 +113,7 @@ if(isset($_POST['submit'])){
 
                 //set session variables
                 $_SESSION['fullname'] = $fullname;
+                $_SESSION['email'] = $email;
                 $_SESSION['phonenumber'] = $phonenumber;
             
 
@@ -186,15 +191,16 @@ function adminLogin() {
 
                 <input  class="reginput" type="text" name = "fullname" placeholder ="Enter Full Name" value="<?php echo $fullname;?>"> <br><br>
             
-                <input  class="passinput" type="number" name = "phonenumber" placeholder ="Phone Number" value="<?php echo $phonenumber;?>"> <br><br>
+                <input  class="passinput" type="phone" name = "phonenumber" placeholder ="Phone Number" value="<?php echo $phonenumber;?>"> <br><br>
+                <input  class="passinput" type="email" name = "email" placeholder ="Email" value="<?php echo $email;?>"> <br><br>
                 <input  class="passinput" type="text" name = "securitykey" placeholder ="Set Security Key" value="<?php echo $securitykey;?>"> <br><br>
                 <input  class="passinput" type="text" name = "securitykeyConfirm" placeholder ="Confirm Security Key" value="<?php echo $securitykeyConfirm;?>"> <br><br>
                 
                 <input  class="passinput" type="password" name = "password" placeholder ="Set password" value="<?php echo $password;?>"> <br><br>
                 <input  class="passinput" type="password" name = "passwordconfirm" placeholder ="Repeat password" value="<?php echo $passwordconfirm;?>"> <br><br>
             
-                <div><h3 style="color: red;"><?php echo $errors['passwordErr']; ?></h3></div>
-                <div><h3 style="color: green;"><?php echo $errors['success']; ?></h3></div>
+                <div><h5 style="color: red;"><?php echo $errors['passwordErr']; ?></h5></div>
+                <div><h5 style="color: green;"><?php echo $errors['success']; ?></h5></div>
 
                 <button name="submit" title="sign Up" >Sign Up</button>
 

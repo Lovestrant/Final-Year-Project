@@ -9,7 +9,7 @@
     include_once('../FirebaseConfig/dbcon.php');
 
     //initializing errors array
-    $errors = array("error" => "", "success" => "");
+    $errors = array("error" => "", "success" => "", "Err" => "");
 
     if (isset($_POST['createBiz'])) {
 
@@ -21,10 +21,6 @@
       $price = $_POST['price'];
      // $picurl = $_FILES['file']['name'];
       $accId = $_POST['hiddenid'];
-
-      $sql = "SELECT * FROM bizaccounts where id='$accId'";
-      $data2= mysqli_query($con,$sql);
-      $queryResults2= mysqli_num_rows($data2);
       
 
       $ref_table ="bizaccounts";
@@ -38,53 +34,68 @@
                 $location = $row['location'];
                 $latitude = $_SESSION['latitude'];
                 $longitude = $_SESSION['longitude'];
-    
-                if(!empty($description) && !empty($adtitle)) {
-    
-                    //Insert Data Into Folder Storage In Hosting Space
-    
-                    $picurl = $_FILES['file']['name'];
-                    $tmp = $_FILES['file']['tmp_name'];
-                    move_uploaded_file($tmp,"../files/adpics/adpics".$picurl);
-                    //Second Ad pic upload
-                    
-                    $picurl2 = $_FILES['file2']['name'];
-                    $tmp = $_FILES['file2']['tmp_name'];
-                    move_uploaded_file($tmp,"../files/adpics/adpics".$picurl2);
-    
-                    //Insert Data Into firebase Realtime Database
-                    
-                    $postData = [
-                        "phonenumber" => $phonenumber,
-                        "id" => $accId,
-                        "adtitle" => $adtitle,
-                        "picurl" => $picurl,
-                        "price" => $price,
-                        "description" => $Bizdescription,
-                        "location" => $location,
-                        "longitude" => $longitude,
-                        "latitude" => $latitude,
-                        "picurl2" => $picurl2,
-                        "accountName" => $accountName,
-                    ];
-                    
-                    $ref_table = "Adverts";
-                    $postRef = $database->getReference($ref_table)->push($postData);
-                    
+                $status = $row['status'];
                 
-                    if($postRef){
-                
-                    //$errors['success'] ="Ad Creation Success.";
-                    echo "<script>alert('Ad Creation Success.')</script>"; 
-                    echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
-                
-                    }
+                if($status == "blocked") {
+                    $errors['Err'] = "
+                 <h3 style='color: red;'>Oohps!! Your business Account Got blocked By Admin, 
+                 You therefore can't create adverts</h3> <br> Contact Admin at <p style='color: green;'>Email: kemboilovestrant@gmail.com </p>
+                 <br> or <p style='color: green;'> WhatsApp: +254791638771 <br> for feedback. </p> <br>
+                 Chat with admin here <button  id='viewaccounts'><a href='admin.php'>Raise Issue to Admin</a></button>
+                 <br><br>
+                 ";
+
+                }else{
+                    if(!empty($description) && !empty($adtitle)) {
+    
+                        //Insert Data Into Folder Storage In Hosting Space
+        
+                        $picurl = $_FILES['file']['name'];
+                        $tmp = $_FILES['file']['tmp_name'];
+                        move_uploaded_file($tmp,"../files/adpics/adpics".$picurl);
+                        //Second Ad pic upload
+                        
+                        $picurl2 = $_FILES['file2']['name'];
+                        $tmp = $_FILES['file2']['tmp_name'];
+                        move_uploaded_file($tmp,"../files/adpics/adpics".$picurl2);
+        
+                        //Insert Data Into firebase Realtime Database
+                        
+                        $postData = [
+                            "phonenumber" => $phonenumber,
+                            "id" => $accId,
+                            "adtitle" => $adtitle,
+                            "picurl" => $picurl,
+                            "price" => $price,
+                            "description" => $Bizdescription,
+                            "location" => $location,
+                            "longitude" => $longitude,
+                            "latitude" => $latitude,
+                            "picurl2" => $picurl2,
+                            "accountName" => $accountName,
+                            "email" => $_SESSION['email']
+                        ];
+                        
+                        $ref_table = "Adverts";
+                        $postRef = $database->getReference($ref_table)->push($postData);
+                        
                     
-                    }else{
-                        // $errors['error'] ="Fill all required fields and choose a ad picture.";
-                        echo "<script>alert('Fill all required fields and choose ad pictures if necessary.')</script>"; 
-                        echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
-                    }
+                        if($postRef){
+                    
+                        $errors['success'] ="Ad Creation Success.";
+                        //echo "<script>alert('Ad Creation Success.')</script>"; 
+                        //echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
+                    
+                        }
+                        
+                        }else{
+                             $errors['error'] ="Fill all required fields and choose a ad picture.";
+                           // echo "<script>alert('Fill all required fields and choose ad pictures if necessary.')</script>"; 
+                           // echo "<script>location.replace('../mainpages/createadvert.php?acc_id=$accId');</script>"; 
+                        }
+                    
+                }
+
                 
             }
                           
@@ -131,11 +142,11 @@
 
     <div class="row">
 
-    
         <div class="col-sm-12" id="bizaccform">
       
         <h4>Create advert:</h4>
-            <form  action="createadvert.php" method="post" enctype="multipart/form-data">
+        <div><h5 style="color: red;"><?php echo $errors['Err']; ?></h5></div>
+            <form  action="createadvert.php?acc_id=<?php echo $_GET['acc_id'];?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name= "hiddenid" value=<?php $id= $_GET['acc_id']; echo $id; ?>> <!-- Hidden input-->
 
             <input class="passinput" type ="text" name="adtitle" placeholder="Enter advert name" value="<?php echo $accountname; ?>"><br><br>
