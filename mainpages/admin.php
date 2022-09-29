@@ -68,7 +68,7 @@ if(isset($_POST['SendMessage'])) {
         <div class="col-sm-12">
             <br><br>
             <h3>Submit Your Issue to the Admin on WhatsApp:</h3>
-            <a href="https://api.whatsapp.com/send?phone=254704707624"><button>Chat with Admin on WhatsApp</button></a>
+            <a href="https://api.whatsapp.com/send?phone=254791638771"><button>Chat with Admin on WhatsApp</button></a>
             <!-- <form action="admin.php" method="post">
               <textarea style='width: 80%;' type="text" name="message" placeholder="Type Issue here" required></textarea> <br><br>
               <button name="SendMessage" class="btn-btn-success">Submit Issue Now</button>

@@ -19,8 +19,9 @@
       $description = $_POST['description'];
       $adtitle = $_POST['adtitle'];
       $price = $_POST['price'];
-     // $picurl = $_FILES['file']['name'];
+     // $picurl = $_FILES['file']['name']; 
       $accId = $_POST['hiddenid'];
+      $payOption = $_POST['payOption'];
       
 
       $ref_table ="bizaccounts";
@@ -73,7 +74,8 @@
                             "latitude" => $latitude,
                             "picurl2" => $picurl2,
                             "accountName" => $accountName,
-                            "email" => $_SESSION['email']
+                            "email" => $_SESSION['email'],
+                            "payOption" => $payOption
                         ];
                         
                         $ref_table = "Adverts";
@@ -152,6 +154,12 @@
             <input class="passinput" type ="text" name="adtitle" placeholder="Enter advert name" value="<?php echo $accountname; ?>"><br><br>
             <input class="passinput" type="text" name="description" placeholder="Enter advert Description"  value="<?php echo $description;?>"> <br><br>
             <input class="passinput" type="text" name="price" placeholder="Enter Price  (optional)" value="<?php echo $price; ?>"><br><br>
+            
+            <select name="payOption" id="cars" style="width: 200px;">
+            <option value="NotMust">Pay on Delivery</option>
+            <option value="mustpay">Must Pay before order</option>
+            </select>
+            <br><br>
 
            <label style="color: black;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose ad picture</label> <br><br>
            <label style="color: black;"> <input style="display: none;" type="file" name="file2" accept="image/*" >Choose ad picture 2 </label> 

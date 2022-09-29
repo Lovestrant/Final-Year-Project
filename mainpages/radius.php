@@ -27,6 +27,7 @@
                 $picurl = $row['picurl'];
                 $picur2 = $row['picurl2'];
                 $price = $row['price'];
+                $payOption = $row['payOption'];
                 
                  
                 $postData = [
@@ -38,7 +39,8 @@
                    "adtitle" => $adtitle,
                    "description" => $description,
                    "id" => $id,
-                   "buyerPhone" => $buyerPhone
+                   "buyerPhone" => $buyerPhone,
+                   "payOption" => $payOption
                ];
                
                $ref_table = "cart";
@@ -168,6 +170,8 @@ if($_SESSION['phonenumber']){
     $latitude = $_SESSION['latitude'] = $_GET['lat'];
     $longitude = $_SESSION['longitude'] = $_GET['long'];
 
+    $SellerPhonenumber = $row['phonenumber'];
+
     $sellerLongitude = $row['longitude'];
     $sellerLatitude = $row['latitude'];
     //calculate distance between seller and buyer in session
@@ -223,7 +227,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>
-    
+                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -258,7 +262,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>  
-    
+                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -292,6 +296,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>
+                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -331,6 +336,7 @@ if($_SESSION['phonenumber']){
                     $btn
                  
                </form>
+               <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                </div>
                 </div>
                 <hr>
