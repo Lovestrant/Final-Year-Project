@@ -10,11 +10,18 @@ $errors = array("phonenumberErr" => "", "success" => "");
 
 if(isset($_POST['submit'])){
     $_SESSION['LoginSuccess'] = "false"; 
-    $phonenumber = $_POST['phonenumber'];
+    $ThePhonenumber = $_POST['phonenumber'];
+    
+    //Ensure Phonenumber has country code.
+    if($ThePhonenumber[0] === "0") {
+        $phonenumber = "+254".substr($ThePhonenumber,1, 9);
+    }else if($ThePhonenumber[0] === "+") {
+        $phonenumber = $ThePhonenumber;
+    }
+
     $password = $_POST['password'];
-
     $password1 = md5($password); //encrypting password
-
+    
        
         $ref_table ="authentication";
         $fetchData = $database->getReference($ref_table)->getValue();

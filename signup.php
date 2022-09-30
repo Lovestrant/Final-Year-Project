@@ -15,13 +15,20 @@ if(isset($_POST['submit'])){
     $fullname = $_POST['fullname'];
     $securitykeyConfirm = $_POST['securitykeyConfirm'];
     $securitykey = $_POST['securitykey'];
-    $phonenumber = $_POST['phonenumber'];
+    $ThePhonenumber = $_POST['phonenumber'];
     $email = $_POST['email'];
    
     $password = $_POST['password'];
     $passwordconfirm = $_POST['passwordconfirm'];
    
-     
+    //Ensure Phonenumber has country code.
+    if($ThePhonenumber[0] === "0") {
+        $phonenumber = "+254".substr($ThePhonenumber,1, 9);
+    }else if($ThePhonenumber[0] === "+") {
+        $phonenumber = $ThePhonenumber;
+    }
+
+
      if($password != $passwordconfirm || $securitykey != $securitykeyConfirm){
          $errors['passwordErr'] = "Password or security key with their confirmations does not match";
       

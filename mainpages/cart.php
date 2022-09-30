@@ -24,27 +24,103 @@ include_once('../FirebaseConfig/dbcon.php');
 
 
    if(isset($_POST['checkout'])){
-    $buyerPhone = $_SESSION['phonenumber'];
-   
+    $payPhonenumber = $_SESSION['phonenumber'];
 
     $ref_table ="cart";
     $fetchData = $database->getReference($ref_table)->getValue();
-    $sum = 0;
+    $amount = $_POST['totalPayable'];
+
+    if($amount<1) {
+       //Complete Order
+       $ref_table ="cart";
+       $fetchData = $database->getReference($ref_table)->getValue();
    
-    if($fetchData >0) {
+       if($fetchData >0) {
+           foreach($fetchData as $key =>$row){
+               $accountName = $row['accountName'];
+               $adtitle = $row['adtitle'];
+               $description = $row['description'];
+               $id = $row['id'];
+               $SellerPhonenumber = $row['phonenumber'];
+               $picurl = $row['picurl'];
+               $picur2 = $row['picurl2'];
+               $price = $row['price'];
+               $buyerPhone = $row['buyerPhone'];
+               $payOption = $row['payOption'];
+    
+               if($_SESSION['phonenumber'] ===$buyerPhone) {
+                   $postData = [
+                       "phonenumber" => $SellerPhonenumber,
+                       "picurl" => $picurl,
+                       "picurl2" => $picur2,
+                       "price" => $price,
+                       "accountName" => $accountName,
+                       "adtitle" => $adtitle,
+                       "description" => $description,
+                       "id" => $id,
+                       "buyerPhone" => $buyerPhone,
+                       "payOption" => $payOption
+                   ];
+                   
+                   $ref_table = "Orders";
+                   $postRef = $database->getReference($ref_table)->push($postData);
+       
+                   if($postRef) {
+                       $ref_table = "cart/".$key;
+                       $DeleteQueryResult = $database->getReference($ref_table)->remove();
+                   }
+               }
+   
+   
+           }
+           echo "<script>alert('Order Made Successful, Thank you');</script>";
+       }
+
+    }else{
+   
+      if($fetchData >0) {
         foreach($fetchData as $key =>$row){
-         if($row['buyerPhone'] === $buyerPhone){
-          $sum += $row['price'];
+         if($row['buyerPhone'] === $payPhonenumber){
+           
+            
+        $account_no='moneygame';
+        if($amount>0){
+        $url="https://tinypesa.com/api/v1/express/initialize";
+        $data = array(
+            'amount' => $amount,
+            'msisdn' => $payPhonenumber,
+            'account_no'=>$account_no
+        );
+        $headers = array(
+          "Content-Type: application/x-www-form-urlencoded",
+          "ApiKey: JPu4SGPCzVi"
+        );
+      
+        $info=http_build_query($data);
+        $curl=curl_init();
+        curl_setopt($curl,CURLOPT_URL,$url);
+        curl_setopt($curl,CURLOPT_POST,true);
+        curl_setopt($curl,CURLOPT_POSTFIELDS,$info);
+        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($curl,CURLOPT_HTTPHEADER,$headers);
+        $resp  = curl_exec($curl);
+        $msg_resp = json_decode($resp);
+        if($msg_resp->success=='true'){
+            echo"<script>alert('wait for stk push')</script>";
+        }
+        }
+      
          }
         }
     }
+    }
+ 
+
 
  }
 
 
- if(isset($_POST['checkout'])){
 
- }
 ?>
 
 <!DOCTYPE html>
@@ -232,6 +308,7 @@ include_once('../FirebaseConfig/dbcon.php');
 
      <form action="cart.php" method="post">
       <input type="hidden" value='<?php echo $totalPayable;?>' name="totalPayable">
+      <h5>You will pay with this phonenumber <?php echo $_SESSION['phonenumber']; ?></h5>
       <button name='checkout'>PAY AND COMPLETE ORDER NOW</button>
      </form>
   </div>

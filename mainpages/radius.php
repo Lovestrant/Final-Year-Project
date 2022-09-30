@@ -172,6 +172,9 @@ if($_SESSION['phonenumber']){
 
     $SellerPhonenumber = $row['phonenumber'];
 
+
+    $TheWhatsAppPhone = substr($SellerPhonenumber, 1,12);
+
     $sellerLongitude = $row['longitude'];
     $sellerLatitude = $row['latitude'];
     //calculate distance between seller and buyer in session
@@ -205,7 +208,7 @@ if($_SESSION['phonenumber']){
                 <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'>Find Seller on G-Maps</button>
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
                 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
     
@@ -227,7 +230,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>
-                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
+                <a href='https://api.whatsapp.com/send?phone=$TheWhatsAppPhone'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -241,7 +244,7 @@ if($_SESSION['phonenumber']){
                 <h2 style='color: red;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
                 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                     
@@ -262,7 +265,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>  
-                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
+                <a href='https://api.whatsapp.com/send?phone=$TheWhatsAppPhone'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -275,7 +278,7 @@ if($_SESSION['phonenumber']){
                 <h2 style='color: red;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>   
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
                
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                     
@@ -296,7 +299,7 @@ if($_SESSION['phonenumber']){
                 $btn
              
                 </form>
-                <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
+                <a href='https://api.whatsapp.com/send?phone=$TheWhatsAppPhone'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                 </div>
                 <hr>
                 </div>
@@ -311,7 +314,7 @@ if($_SESSION['phonenumber']){
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
           
     
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
     
                 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
@@ -336,7 +339,7 @@ if($_SESSION['phonenumber']){
                     $btn
                  
                </form>
-               <a href='https://api.whatsapp.com/send?phone=$SellerPhonenumber'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
+               <a href='https://api.whatsapp.com/send?phone=$TheWhatsAppPhone'> <img src='whatsapp.png' style='width: 65px;padding-top: 5%;'></a>
                </div>
                 </div>
                 <hr>
@@ -352,7 +355,7 @@ if($_SESSION['phonenumber']){
                 <h2 style='color: red;text-align:centre;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
                 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
     
@@ -379,8 +382,8 @@ if($_SESSION['phonenumber']){
                 <h2 style='color: red;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
                 
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
-                
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
+
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                     
                 </div>
@@ -404,8 +407,7 @@ if($_SESSION['phonenumber']){
                 <div>
                 <h2 style='color: red;'>".$row['accountName']."</h2>
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
-               
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>   
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a> 
                
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                     
@@ -432,8 +434,7 @@ if($_SESSION['phonenumber']){
                 <label style='color: blue;'>Seller is about ".round($dist,2)."</label>". " KM from you. 
           
     
-                <button style='color: red;' name='getGoogleLocation'><a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'></a>Find Seller on G-Maps</button>
-    
+                <a href='findSeller.php?sellerLong=".$row['longitude']."&sellerLat=".$row['latitude']."'><button style='color: red;' name='getGoogleLocation'>Find Seller on G-Maps</button></a>
                 
                 <h3 style='color: green;'>".$row['adtitle']."</h3>
                     
