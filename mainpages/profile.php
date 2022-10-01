@@ -198,11 +198,20 @@
 
 </div>
 <div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
-<button  id="viewaccounts"><a href="admin.php">Raise Issue to Admin</a></button>
+
+<?php 
+ 
+ if($_SESSION['phonenumber'] != "+254791638771") {
+   echo "
+   <button  id='viewaccounts'><a href='admin.php'>Raise Issue to Admin</a></button>
+   ";
+ }
+
+?>
 
  <?php 
  
-  if($_SESSION['phonenumber'] === "0791638771") {
+  if($_SESSION['phonenumber'] === "+254791638771") {
     echo "
     <button  id='viewaccounts'><a href='users.php'>ADMIN PANEL</a></button>
     ";

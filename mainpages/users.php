@@ -102,6 +102,8 @@ $Thekey = $_POST['key'];
     <div class="row">
         <div class="col-sm-12">
             <br><br>
+            <a href='manageOrders.php'><button>MANAGE ORDERS</button></a>
+            <br><br>
             <h3>All Users in the system:</h3>
             <?php 
             

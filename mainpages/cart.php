@@ -59,7 +59,8 @@ include_once('../FirebaseConfig/dbcon.php');
                        "description" => $description,
                        "id" => $id,
                        "buyerPhone" => $buyerPhone,
-                       "payOption" => $payOption
+                       "payOption" => $payOption,
+                       "paid" => "Not Yet Paid"
                    ];
                    
                    $ref_table = "Orders";

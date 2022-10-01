@@ -4,6 +4,9 @@ session_start();
 $phonenumber=$regNo =$password = '';
 $errors = array("phonenumberErr" => "", "success" => "");
 
+if(!$_SESSION['phonenumber']){
+    echo "<script>alert('Ensure you turn on location before Sign Up / Sign In');</script>";
+}
 
     //Requiring DB configs
     include_once('./FirebaseConfig/dbcon.php');
@@ -110,6 +113,7 @@ if(isset($_POST['submit'])){
     <div class="row">
     <div class="col-sm-12">
             <p id="topparagraph" style="font-size: 25px">Login to Location-Based E-commerce System:</p>
+           
         </div>
     </div>
     <br><br>
@@ -117,6 +121,7 @@ if(isset($_POST['submit'])){
     <div class="row">
     <div class="col-sm-12" id="topparagraph">
             <form action="index.php" method="post">
+            <p  style="color: green;text-align:centre;">Ensure location is turned on before proceeding</p>
                 <input class="reginput" type="text" name ="phonenumber" placeholder="Enter your Phone Number" value="<?php echo $regNo;?>"><br><br>
                 <input  class="passinput" type="password" name = "password" placeholder ="Enter password" value="<?php echo $password;?>"> <br><br>
             
