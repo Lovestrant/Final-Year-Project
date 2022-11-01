@@ -4,9 +4,9 @@ session_start();
 $phonenumber=$regNo =$password = '';
 $errors = array("phonenumberErr" => "", "success" => "");
 
-if(!$_SESSION['phonenumber']){
-    echo "<script>alert('Ensure you turn on location before Sign Up / Sign In');</script>";
-}
+// if(!$_SESSION['phonenumber']){
+//     echo "<script>alert('Ensure you turn on location before Sign Up / Sign In');</script>";
+// }
 
     //Requiring DB configs
     include_once('./FirebaseConfig/dbcon.php');
@@ -91,12 +91,15 @@ if(isset($_POST['submit'])){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Location-Based Ecommerce System</title>
 
-<!--Css link-->
-<link rel="stylesheet" type="text/css" href="css/index.css">
 <!--Bootstrap css Links -->
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <!--Bootstrap JS Links -->
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<!--Css link-->
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+
 </head>
 
 
@@ -112,37 +115,41 @@ if(isset($_POST['submit'])){
 
     <div class="row">
     <div class="col-sm-12">
-            <p id="topparagraph" style="font-size: 25px">Login to Location-Based E-commerce System:</p>
+        <br>
+            <p id="topparagraph" style="font-size: 20px">Login to Location-Based E-commerce System:</p>
            
         </div>
     </div>
     <br><br>
 
     <div class="row">
-    <div class="col-sm-12" id="topparagraph">
+    <div class="col-sm-12" id="topparagraph" style="text-align: center; font-style: bold; background: lightgrey;border-radius: 20px;">
             <form action="index.php" method="post">
+                <br>
             <p  style="color: green;text-align:centre;">Ensure location is turned on before proceeding</p>
-                <input class="reginput" type="text" name ="phonenumber" placeholder="Enter your Phone Number" value="<?php echo $regNo;?>"><br><br>
+                <input class="reginput"  type="text" name ="phonenumber" placeholder="Enter your Phone Number" value="<?php echo $regNo;?>"><br><br>
                 <input  class="passinput" type="password" name = "password" placeholder ="Enter password" value="<?php echo $password;?>"> <br><br>
             
             <!--Error display-->
             <div><h5 style="color: red;"><?php echo $errors['phonenumberErr']; ?></h5></div>
             <div><h5 style="color: green;"><?php echo $errors['success']; ?></h5></div>
             
-                <button type= "submit" name="submit" title="Login">Login</button>
+                <button class='btn btn-success' style='width: auto;' type= "submit" name="submit" title="Login">Login</button>
 
             </form>
-        </div>
-    </div>
 
-    <br>
-    <div class="row" id="topparagraph">
+            <br>
+    <div class="row" id="topparagraph" >
     <div class="col-sm-12" id ="bottomdiv">
             <a href="signup.php" id="register">Create A new Account</a><br><br>
             <a id="reset" href="reset.php">Forgot Password</a>
-            
+            <br>
     </div>
     </div>
+        </div>
+    </div>
+
+
 
 </div>
 

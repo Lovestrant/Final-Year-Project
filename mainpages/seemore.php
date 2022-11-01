@@ -106,7 +106,7 @@
             $name = $_GET['name'];
 
             echo "
-            <br><br>
+            <br><br><br>
             <h3 style='color: green;'>More Info on User: $name</h3>
             <h4 style='color: red;'>Business Accounts</h4>
             ";
@@ -117,6 +117,7 @@
              
                  if($fetchData >0) {
                      foreach($fetchData as $key =>$row) {
+                       $SellerPhone =  $row['phonenumber'];
 
                         if($row['status'] == 'blocked') {
                          $btn = "<button style='color:green;margin: 10px;' name='unBlockAccount'>UnBlock Account</button>";
@@ -124,7 +125,7 @@
                          $btn = "<button style='color:red;margin: 10px;' name='BlockAccount'>Block Account</button>";
                         }
 
-                       if($row['phonenumber'] === $phone) {
+                       if($SellerPhone == $phone) {
 
                         $accountName = $row['accountName'];
                         $description = $row['description'];
@@ -145,9 +146,7 @@
 
                 }
             }
-
-                
-            
+     
 
     ?>
     </div>

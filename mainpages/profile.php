@@ -1,6 +1,7 @@
 <?php 
     session_start();
 
+    $_SESSION['windowTabbed'] = "Profile";
     include_once('../FirebaseConfig/dbcon.php');
     //initializing errors array
     $errors = array("error" => "", "success" => "");
@@ -158,7 +159,7 @@
     <form action = "profile.php" method="post" enctype="multipart/form-data">
 
         <label style="color: black;"> <input style="display: none;" type="file" name="file" accept="image/*" >Choose Profile picture</label> <br><br>
-        <button name="updateProfile">Change Profile</button>
+        <button name="updateProfile" class='btn btn-warning'>Change Profile</button>
     </form>
 
     <div><h5 style="color: red;"><?php echo $errors['error']; ?></h5></div>
@@ -181,39 +182,42 @@
  </div>
 
 <div class="row">
-     <div class="col-sm-4">
-      <button style="color: grey;margin-bottom: 2%;" id="viewaccounts"><a href="viewmessages.php"  id="viewaccounts">Personal Messages</a></button>
+     <div class="col-sm-3">
+      <button style="color: grey;margin-bottom: 2%;" id="viewaccounts" class='btn btn-info'><a href="viewmessages.php"  id="viewaccounts">Personal Messages</a></button>
       </div>
-    <div class="col-sm-4">
-    <a href="businessAccount.php">
-    <button id="viewaccounts" style="color: green;margin-bottom: 2%;">Create new Business Account</button>
+    <div class="col-sm-3">
+    <a href="businessAccount.php" >
+    <button id="viewaccounts" style="color: green;margin-bottom: 2%;" class='btn btn-secondary'>Create Business Account</button>
     </a>
 
     </div>
 
-      <div class="col-sm-4">
-      <button  id="viewaccounts"><a href="viewaccounts.php"  id="viewaccounts">See your Business Accounts</a></button>
+      <div class="col-sm-3">
+      <button id="viewaccounts"  class='btn btn-warning'><a href="viewaccounts.php" >Your Business Accounts</a></button>
+      </div>
+     
+      <div class="col-sm-3">
+      <button id="viewaccounts"  class='btn btn-secondary'><a href="myorders.php" >Your Orders</a></button>
       </div>
        
 
 </div>
-<div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
+<div style="text-align: centre; margin-bottom:3%;padding: 1%;"> <br><br>
 
 <?php 
  
  if($_SESSION['phonenumber'] != "+254791638771") {
    echo "
-   <button  id='viewaccounts'><a href='admin.php'>Raise Issue to Admin</a></button>
+   <button  id='viewaccounts' class='btn btn-success'><a href='admin.php'>Raise Issue to Admin</a></button>
    ";
  }
 
-?>
-
- <?php 
  
   if($_SESSION['phonenumber'] === "+254791638771") {
     echo "
-    <button  id='viewaccounts'><a href='users.php'>ADMIN PANEL</a></button>
+    <div class='container'>
+    <button  id='viewaccounts' class='btn btn-success'><a href='users.php'>ADMIN PANEL</a></button>
+    </div>
     ";
   }
  
@@ -221,9 +225,9 @@
 </div>
 
 
-<div style="text-align: left; margin-bottom:3%;padding: 1%;"> <br><br>
+<div style="text-align: centre; margin-bottom:3%;padding: 1%;"> <br><br>
 <form action="../logout.php">
-<button style="color:red;">Log Out</button>
+<button style="color:white;" class="btn btn-danger">Log Out</button>
 </form>
 </div>
 

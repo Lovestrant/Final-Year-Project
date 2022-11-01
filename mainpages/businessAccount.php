@@ -113,6 +113,8 @@
     
     <!--Css link-->
     <link rel="stylesheet" type="text/css" href="../css/bizaccounts.css">
+        <!--Css link-->
+        <link rel="stylesheet" type="text/css" href="../css/index.css">
     <!--Bootstrap css Links -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!--Bootstrap JS Links -->
@@ -136,11 +138,11 @@
 
     <div class="row" id="ToCentreRow">
     <div class="col-sm-12"> 
-     <button  id="viewaccounts"><a href="viewaccounts.php"  id="viewaccounts">See your Business Accounts</a></button>
+     <button  id="viewaccounts"><a href="viewaccounts.php"  id="viewaccounts" class="btn btn-success">See your Business Accounts</a></button>
     </div>
 
     </div>
-    <div class="row">
+    <div class="row" style=" text-align: centre;">
 
         <div class="col-sm-12" id="bizaccform">
         
@@ -156,8 +158,8 @@
         <div><h5 style="color: red;"><?php echo $errors['error']; ?></h5></div>
         <div><h5 style="color: green;"><?php echo $errors['success']; ?></h5></div>
 
-          <button name="createBiz">Create Account</button>
-        
+          <button name="createBiz" class="btn btn-success" >Create Account</button>
+          <br>
             </form>
         </div>
     </div>

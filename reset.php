@@ -107,8 +107,9 @@ if(isset($_POST['submit'])){
         </div>
     </div> <br>
 
-    <div class="row" id="topparagraph">
-        <div class="col-sm-12">
+    <div class="row" id="topparagraph" style="text-align: center; font-style: bold; background: lightgrey;border-radius: 20px;">
+    <br><br>    
+    <div class="col-sm-12">
             <form action="reset.php" method="post">
             
                 <input class="reginput" type="number" name ="phonenumber" placeholder="Enter your Phonenumber" value="<?php echo $phonenumber;?>"><br><br>
@@ -120,20 +121,23 @@ if(isset($_POST['submit'])){
                 <div><h3 style="color: green;"><?php echo $errors['success']; ?></h3></div>
                 <div><h3 style="color: red;"><?php echo $errors['passwordErr']; ?></h3></div>
                 
-                <button name="submit" title="sign Up" >Reset</button>
+                <button class="btn btn-success" name="submit" title="sign Up" >Reset</button>
 
             </form>
-        </div>
-    </div> <br><br>
-
-
- <div class="row" id="topparagraph">
+                
+            <br>
+            <div class="row" id="topparagraph">
         <div class="col-sm-12" id ="bottomdiv">
             <a href="signup.php"> Register.</a> <br><br>
             <a id="reset" href="index.php"> Back to login page.</a>
             
         </div>
     </div>
+        </div>
+    </div> <br><br>
+
+
+
 
 </div>
  

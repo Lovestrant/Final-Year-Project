@@ -18,12 +18,13 @@ $phonenumber = $callcontent->Body->stkCallback->CallbackMetadata->Item[4]->Value
 if($resultcode==0){
     //What happens If response Is success
 
-if($_SESSION['phonenumber'] === $phonenumber){
+
     $ref_table ="cart";
     $fetchData = $database->getReference($ref_table)->getValue();
 
     if($fetchData >0) {
         foreach($fetchData as $key =>$row){
+
             $accountName = $row['accountName'];
             $adtitle = $row['adtitle'];
             $description = $row['description'];
@@ -35,7 +36,7 @@ if($_SESSION['phonenumber'] === $phonenumber){
             $buyerPhone = $row['buyerPhone'];
             $payOption = $row['payOption'];
  
-            if($phonenumber ===$buyerPhone) {
+            if("+".$phonenumber ===$buyerPhone) {
                 $postData = [
                     "phonenumber" => $SellerPhonenumber,
                     "picurl" => $picurl,
@@ -56,15 +57,16 @@ if($_SESSION['phonenumber'] === $phonenumber){
                     $ref_table = "cart/".$key;
                     $DeleteQueryResult = $database->getReference($ref_table)->remove();
                 }
-            }
-
+            
+  
+        }
 
         }
         echo "<script>alert('Order Made Successful, Thank you');</script>";
     }
 }
 
-}
+
 
 
 ?>

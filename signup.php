@@ -191,9 +191,9 @@ function adminLogin() {
     </div>
 
     <div class="row">
-    <div class="col-sm-12" id="topparagraph">
-            <form action="signup.php" method="post">
-
+    <div class="col-sm-12" id="topparagraph" style="text-align: center; font-style: bold; background: lightgrey;border-radius: 20px;">
+            <form action="signup.php" method="post" >
+                 <br>
                 <div><h5 style="color: red;"><?php echo $errors['Err']; ?></h5></div>
 
                 <input  class="reginput" type="text" name = "fullname" placeholder ="Enter Full Name" value="<?php echo $fullname;?>"> <br><br>
@@ -209,20 +209,20 @@ function adminLogin() {
                 <div><h5 style="color: red;"><?php echo $errors['passwordErr']; ?></h5></div>
                 <div><h5 style="color: green;"><?php echo $errors['success']; ?></h5></div>
 
-                <button name="submit" title="sign Up" >Sign Up</button>
+                <button class='btn btn-success' name="submit" title="sign Up" >Sign Up</button>
 
             </form>
+
+            <div class="row" id="topparagraph">
+            <div class="col-sm-12" id ="bottomdiv">
+            <br>
+                <a id="reset" href="index.php"> Go back to login page.</a>
+                
+            </div>
+            </div>
         </div>
     </div> <br> 
 
-
-    <div class="row" id="topparagraph">
-    <div class="col-sm-12" id ="bottomdiv">
-         
-        <a id="reset" href="index.php"> Go back to login page.</a>
-        
-    </div>
-    </div>
 
 </div>
 

@@ -153,9 +153,9 @@
 
             <input class="passinput" type ="text" name="adtitle" placeholder="Enter advert name" value="<?php echo $accountname; ?>"><br><br>
             <input class="passinput" type="text" name="description" placeholder="Enter advert Description"  value="<?php echo $description;?>"> <br><br>
-            <input class="passinput" type="text" name="price" placeholder="Enter Price  (optional)" value="<?php echo $price; ?>"><br><br>
+            <input class="passinput" type="number" name="price" placeholder="Enter Price in KES (optional)" value="<?php echo $price; ?>"><br><br>
             
-            <select name="payOption" id="cars" style="width: 200px;">
+            <select name="payOption" id="cars" style="width: 200px;height: 30px;">
             <option value="NotMust">Pay on Delivery</option>
             <option value="mustpay">Must Pay before order</option>
             </select>
@@ -169,7 +169,7 @@
         <div><h5 style="color: red;"><?php echo $errors['error']; ?></h5></div>
         <div><h5 style="color: green;"><?php echo $errors['success']; ?></h5></div>
 
-          <button name="createBiz">Create Advert</button>
+          <button class = "btn btn-success" name="createBiz">Create Advert</button>
         
             </form>
         </div>

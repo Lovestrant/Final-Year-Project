@@ -50,10 +50,10 @@
     color: green;
 }
 
-#topparagraph{
+#topparagraph, #bizaccform{
     text-align: center;
     font-style: bold;
-    
+
 }
 #ToCentreRow,#viewaccounts {
     text-align: center;  

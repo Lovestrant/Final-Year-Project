@@ -1,4 +1,9 @@
 <?php 
+//session_start();
+
+$windowTabbed = $_SESSION['windowTabbed'];
+
+
 include_once('../FirebaseConfig/dbcon.php');  
 $buyerPhone = $_SESSION['phonenumber'];
 
@@ -10,7 +15,8 @@ if($fetchData >0) {
     foreach($fetchData as $key =>$row){
      
       if($row['buyerPhone'] ===$buyerPhone){
-        $num = $num+1;    
+        $num = $num+1;  
+          
       }
     }
 }
@@ -72,9 +78,33 @@ if($fetchData >0) {
 
 <div class="col-sm-12" style="text-align: right; margin-right: 2%; margin-top: -2%;">
   
-  <button id="radius" onClick = "toRadius()">Radius</button>
-  <a href="profile.php"><button>Profile</button></a>
-  <a href="cart.php"><button>Cart <span style="color: red;"><?php echo $num; ?></span></button></a>  
+<?php 
+
+ if($windowTabbed === "Radius"){
+  echo "
+  <button style='color: red;' id='radius' onClick = 'toRadius()'>Radius</button>
+  <a href='profile.php'><button>Profile</button></a>
+  <a href='cart.php'><button>Cart <span style='color: red;'> $num</span></button></a>  
+  ";
+ } else if( $windowTabbed === "Profile") {
+    echo "
+    <button  id='radius' onClick = 'toRadius()'>Radius</button>
+    <a href='profile.php'><button style='color: red;'>Profile</button></a>
+    <a href='cart.php'><button>Cart <span style='color: red;'>$num</span></button></a>  
+    ";
+
+ } else if($windowTabbed === "Cart") {
+
+    echo "
+    <button id='radius' onClick = 'toRadius()'>Radius</button>
+    <a href='profile.php'><button>Profile</button></a>
+    <a href='cart.php'><button style='color: red;'>Cart <span style='color: red;'> $num</span></button></a>  
+    ";
+ }
+
+
+?>
+
 </div>
   
 </div> 

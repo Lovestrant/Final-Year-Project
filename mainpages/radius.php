@@ -1,6 +1,8 @@
 <?php 
     session_start();
 
+    $_SESSION['windowTabbed'] = "Radius";
+
     $_SESSION['longitude'] = $_GET['long'];
     $_SESSION['latitude'] = $_GET['lat'];
     include_once('../FirebaseConfig/dbcon.php');  
@@ -99,7 +101,7 @@
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 
 <style>
-.zoom2{
+/* .zoom2{
     width:45%;
     height:auto;
     transition: transform ease-in-out 0.3s;
@@ -119,7 +121,7 @@
     text-align: center;
     justify-content: center;
     
-    }
+    } */
 </style>
 
 <script>
@@ -130,7 +132,7 @@
                                 window.open('../mainpages/radius.php?lat=' + ab + '&long=' + ac, '_self')
                             }); 
     }
-    setInterval(resetCoordinates, 300000);
+    setInterval(resetCoordinates, 60000);
 </script>
 
 </head>

@@ -1,5 +1,7 @@
 <?php 
 session_start();
+$_SESSION['windowTabbed'] = "Cart";
+
 include_once('../FirebaseConfig/dbcon.php');  
      //remove from cart
      if(isset($_POST['removefromcart'])){
@@ -84,7 +86,7 @@ include_once('../FirebaseConfig/dbcon.php');
          if($row['buyerPhone'] === $payPhonenumber){
            
             
-        $account_no='moneygame';
+        $account_no='locationbasedecommerce';
         if($amount>0){
         $url="https://tinypesa.com/api/v1/express/initialize";
         $data = array(
@@ -94,7 +96,7 @@ include_once('../FirebaseConfig/dbcon.php');
         );
         $headers = array(
           "Content-Type: application/x-www-form-urlencoded",
-          "ApiKey: JPu4SGPCzVi"
+          "ApiKey: LwKEJCzxLLh"
         );
       
         $info=http_build_query($data);
@@ -107,7 +109,7 @@ include_once('../FirebaseConfig/dbcon.php');
         $resp  = curl_exec($curl);
         $msg_resp = json_decode($resp);
         if($msg_resp->success=='true'){
-            echo"<script>alert('wait for stk push')</script>";
+            echo"<script>alert('Check your phone for stk push')</script>";
         }
         }
       
@@ -310,7 +312,7 @@ include_once('../FirebaseConfig/dbcon.php');
      <form action="cart.php" method="post">
       <input type="hidden" value='<?php echo $totalPayable;?>' name="totalPayable">
       <h5>You will pay with this phonenumber <?php echo $_SESSION['phonenumber']; ?></h5>
-      <button name='checkout'>PAY AND COMPLETE ORDER NOW</button>
+      <button name='checkout' class='btn btn-success'>PAY AND COMPLETE ORDER NOW</button>
      </form>
   </div>
 </div> 
